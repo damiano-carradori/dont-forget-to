@@ -13,7 +13,7 @@ class App extends Component {
                     <DontForgetTo/>
                 </main>
                 <footer>
-                    &copy; 2018 - Damiano Carradori
+                    &copy; 2018 - Made with <span role="img" aria-label="love">❤️</span> and <span role="img" aria-label="React">⚛️</span> by Damiano Carradori
                 </footer>
             </div>
 
