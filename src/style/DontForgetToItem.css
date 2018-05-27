@@ -4,7 +4,26 @@
     display: flex;
     align-items: center;
 }
+.dont-forget-to-item > input[type=checkbox]{
+    margin: 0 8px 0 0;
+}
 .dont-forget-to-item > span{
+    font-size: 14px;
     flex: 1 0 auto;
     text-align: left;
+}
+.dont-forget-to-item.done > span{
+    color: #dddddd;
+    text-decoration: line-through;
+}
+.dont-forget-to-item > button{
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    background-color: crimson;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    padding: 4px 8px;
+    cursor: pointer;
 }
