@@ -1,0 +1,10 @@
+.dont-forget-to-item{
+    border-top: 1px solid #ddd;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+}
+.dont-forget-to-item > span{
+    flex: 1 0 auto;
+    text-align: left;
+}

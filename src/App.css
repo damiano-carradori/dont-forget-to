@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+.App {
+  text-align: center;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-main {
+  height: 70vh;
+}
+
+.App-main > .dont-forget-to-container {
+  width: 60vw;
+  margin: 0 auto;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+}
+
+.App-main > .dont-forget-to-container *{
+  font-size: 14px;
+}
+
+.App-main > .dont-forget-to-container > input {
+  width: 100%;
+  border: 0;
+  padding: 8px 16px;
+}
+
+.App-main > .dont-forget-to-container > .dont-forget-to-list {
+}
