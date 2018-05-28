@@ -3,6 +3,7 @@ import DontForgetToItem from "./DontForgetToItem";
 import _ from 'lodash'
 import cx from 'classnames'
 import DontForgetToAdd from "./DontForgetToAdd";
+import DontForgetToFooter from "./DontForgetToFooter";
 
 class DontForgetTo extends Component {
     constructor() {
@@ -87,12 +88,7 @@ class DontForgetTo extends Component {
                             />
                     )}
                 </div>
-                <div className="total-counter">
-                    {to_do?
-                        `${to_do} task${to_do>1?'s':''} left`:
-                        <span>Great, you have accomplished all your tasks!<br/>Write on the box above and press ⏎ ( Enter ) to add a new task.</span>
-                    }
-                </div>
+                <DontForgetToFooter total={to_do}/>
             </div>
         )
     }
