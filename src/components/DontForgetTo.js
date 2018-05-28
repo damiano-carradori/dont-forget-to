@@ -67,6 +67,7 @@ class DontForgetTo extends Component {
 
     render() {
         let tasks = this.state.tasks;
+        let to_do = _.size(_.filter(tasks, task => !task.done ));
         return (
             <div className="dont-forget-to-container">
                 <input
@@ -90,8 +91,8 @@ class DontForgetTo extends Component {
                     )}
                 </div>
                 <div className="total-counter">
-                    {tasks.length?
-                        `${tasks.length} task${tasks.length>1?'s':''} left`:
+                    {to_do?
+                        `${to_do} task${to_do>1?'s':''} left`:
                         <span>Great, you have accomplished all your tasks!<br/>Write on the box above and press ⏎ ( Enter ) to add a new task.</span>
                     }
                 </div>
