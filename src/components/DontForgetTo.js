@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import DontForgetToItem from "./DontForgetToItem";
 import _ from 'lodash'
 import cx from 'classnames'
+import DontForgetToAdd from "./DontForgetToAdd";
 
 class DontForgetTo extends Component {
     constructor() {
@@ -70,11 +71,7 @@ class DontForgetTo extends Component {
         let to_do = _.size(_.filter(tasks, task => !task.done ));
         return (
             <div className="dont-forget-to-container">
-                <input
-                    type="text"
-                    placeholder="write here and press Enter to remember"
-                    onKeyDown={this.addTaks}
-                />
+                <DontForgetToAdd handleAdd={(e) => { this.addTaks(e) }}/>
                 <div className={cx(
                     'dont-forget-to-list',
                     { empty: !tasks.length }
