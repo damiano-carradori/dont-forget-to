@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import DontForgetToItem from "./DontForgetToItem";
 import _ from 'lodash'
-import cx from 'classnames'
 import DontForgetToAdd from "./DontForgetToAdd";
 import DontForgetToFooter from "./DontForgetToFooter";
+import DontForgetToList from "./DontForgetToList";
 
 class DontForgetTo extends Component {
     constructor() {
@@ -73,21 +72,11 @@ class DontForgetTo extends Component {
         return (
             <div className="dont-forget-to-container">
                 <DontForgetToAdd handleAdd={(e) => { this.addTaks(e) }}/>
-                <div className={cx(
-                    'dont-forget-to-list',
-                    { empty: !tasks.length }
-                )}>
-                    {tasks.map(
-                        task =>
-                            <DontForgetToItem
-                                key={task.id}
-                                text={task.text}
-                                done={task.done}
-                                handleDone={() => this.taskDone( task.id )}
-                                handleRemove={() => this.removeTask( task.id )}
-                            />
-                    )}
-                </div>
+                <DontForgetToList
+                    tasks={tasks}
+                    onToggleDone={ id => id}
+                    onRemove={ id => id}
+                />
                 <DontForgetToFooter total={to_do}/>
             </div>
         )
