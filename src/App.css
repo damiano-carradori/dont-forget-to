@@ -1,12 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower|Roboto:400,500');
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: 'Indie Flower', cursive;
+}
+body{
+    background-color: seashell;
+    font-size: 18px;
 }
 .App {
   text-align: center;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 2em;
 }
 
 .App-main {
@@ -19,12 +25,8 @@
 
 }
 
-/*.App-main > .dont-forget-to-container *{*/
-  /*font-size: 14px;*/
-/*}*/
-
 .App-main > .dont-forget-to-container > input {
-  font-size: 14px;
+  font-size: 1em;
   width: 100%;
   border: 0;
   padding: 8px 16px;
