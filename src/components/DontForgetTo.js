@@ -45,10 +45,16 @@ class DontForgetTo extends Component {
         let newList = _.remove(this.state.tasks, task => {
             return task.id !== id
         });
-        task.done = true;
-        this.setState({
-            tasks: [...newList, task]
-        });
+        task.done = !task.done;
+        if(task.done) {
+            this.setState({
+                tasks: [...newList, task]
+            });
+        } else {
+            this.setState({
+                tasks: [task, ...newList]
+            });
+        }
     };
 
     removeTask = id => {
