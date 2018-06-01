@@ -1,12 +1,32 @@
 import React, { Component }from 'react'
 import '../style/DontForgetToList.css'
 import cx from 'classnames'
+import { connect } from 'react-redux'
 import DontForgetToItem from "./DontForgetToItem";
+import _ from "lodash";
+
+const mapStateToProps = state => {
+    const filterTasks = ( tasks, filter ) =>{
+        switch (filter) {
+            case 'SHOW_ALL':
+                return tasks;
+            case 'SHOW_TODOS':
+                return _.filter(state.tasks, task => !task.done );
+            case 'SHOW_DONE':
+                return _.filter(state.tasks, task => task.done );
+            default:
+                return false;
+        }
+    };
+    return {
+        tasks : filterTasks(state.tasks, state.filter)
+    }
+};
 
 class DontForgetToList extends Component {
 
     render(){
-        let { tasks, onToggleDone, onRemove } = this.props;
+        let { tasks } = this.props;
         return(
             <div className={cx(
                 'dont-forget-to-list',
@@ -17,8 +37,6 @@ class DontForgetToList extends Component {
                         <DontForgetToItem
                             key={task.id}
                             {...task}
-                            handleDone={() => onToggleDone( task.id )}
-                            handleRemove={() => onRemove( task.id )}
                         />
                 )}
             </div>
@@ -26,5 +44,5 @@ class DontForgetToList extends Component {
     }
 
 }
-
+DontForgetToList = connect(mapStateToProps)(DontForgetToList);
 export default DontForgetToList

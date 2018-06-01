@@ -1,20 +1,34 @@
-import React, { Component }from 'react'
+import React from 'react'
 import '../style/DontForgetToAdd.css'
+import { connect } from 'react-redux'
 
-class DontForgetToAdd extends Component {
+let DontForgetToAdd = ({ dispatch }) => {
+    const addTaks = e => {
+        if (e.key === 'Enter') {
+            e.stopPropagation();
+            e.preventDefault();
 
-    render(){
-        let { handleAdd } = this.props;
-        return(
-            <input
-                className="dont-forget-to-add"
-                type="text"
-                placeholder="write here and press Enter to remember"
-                onKeyDown={handleAdd}
-            />
-        )
-    }
-
-}
+            let text = e.target.value.trim();
+            if(text) {
+                let time = new Date();
+                dispatch({
+                    type: 'ADD_TASK',
+                    text: text,
+                    id: time.getTime()
+                });
+            }
+            e.target.value = ''
+        }
+    };
+    return(
+        <input
+            className="dont-forget-to-add"
+            type="text"
+            placeholder="write here and press Enter to remember"
+            onKeyDown={addTaks}
+        />
+    )
+};
+DontForgetToAdd = connect()(DontForgetToAdd);
 
 export default DontForgetToAdd

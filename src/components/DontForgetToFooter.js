@@ -1,5 +1,13 @@
 import React, { Component }from 'react'
 import '../style/DontForgetToFooter.css'
+import _ from 'lodash';
+import { connect } from 'react-redux'
+
+const mapStateToProps = state => {
+    return {
+        total : _.size(_.filter(state.tasks, task => !task.done ))
+    }
+};
 
 class DontForgetToFooter extends Component {
 
@@ -16,6 +24,7 @@ class DontForgetToFooter extends Component {
     }
 
 }
+DontForgetToFooter = connect(mapStateToProps)(DontForgetToFooter);
 
 export default DontForgetToFooter
 
