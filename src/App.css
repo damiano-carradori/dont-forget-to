@@ -4,23 +4,20 @@
     font-family: 'Indie Flower', cursive;
 }
 body{
-    background-color: seashell;
+    /*background-color: seashell;*/
+    background-color: #fafafa;
     font-size: 18px;
 }
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-title {
-  font-size: 2em;
+    font-size: 2em;
 }
 
 .App-main {
-  height: 80vh;
-}
-
-.App-main > .dont-forget-to-container {
-  width: 60vw;
-  margin: 0 auto;
-
+    height: 80vh;
+    display: flex;
+    justify-content: center;
 }

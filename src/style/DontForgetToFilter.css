@@ -1,21 +1,32 @@
+.dont-forget-to-filter{
+    display: flex;
+}
 .dont-forget-to-filter button{
     font-family: 'Roboto', sans-serif;
     font-size: .625em;
     font-weight: 500;
     text-transform: uppercase;
     background-color: transparent;
-    border: none;
-    /*border: 1px solid #673ab7;*/
-    color: #673ab7;
-    border-radius: 3px;
+    border: 1px solid transparent;
+    color: #9c27b0;
+    /*border-radius: 3px;*/
     padding: 4px 8px;
     cursor: pointer;
-    margin-left: 8px;
+    flex: 1 0 auto;
 }
-
+.dont-forget-to-filter button:first-child{
+    border-radius: 3px 0 0 3px;
+}
+.dont-forget-to-filter button:last-child{
+    border-radius: 0 3px 3px 0;
+}
+.dont-forget-to-filter button:hover{
+    border-color: #9c27b0;
+}
 .dont-forget-to-filter button.active{
-    /*background-color: #673ab7;*/
+    background-color: #9c27b0;
     /*border: none;*/
-    /*color: #ffffff;*/
-    border: 1px solid #673ab7;
+    color: #fafafa;
+    /*border: 1px solid #673ab7;*/
+    /*border: 1px solid #9c27b0;*/
 }
