@@ -10,9 +10,9 @@ const mapStateToProps = state => {
         switch (filter) {
             case 'SHOW_ALL':
                 return tasks;
-            case 'SHOW_TODOS':
+            case 'SHOW_ACTIVE':
                 return _.filter(state.tasks, task => !task.done );
-            case 'SHOW_DONE':
+            case 'SHOW_COMPLETED':
                 return _.filter(state.tasks, task => task.done );
             default:
                 return false;
