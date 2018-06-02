@@ -24,7 +24,7 @@ let DontForgetToAdd = ({ dispatch }) => {
         <input
             className="dont-forget-to-add"
             type="text"
-            placeholder="write here and press Enter to remember"
+            placeholder="write here and press ⏎ ( Enter ) to add a new task"
             onKeyDown={addTaks}
         />
     )
