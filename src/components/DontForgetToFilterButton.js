@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React  from 'react'
 import { connect } from 'react-redux'
 import cx from 'classnames'
+import { setFilter } from '../actionCreators'
 
 const mapStateToProps = ( state, props )=> {
     return {
@@ -9,30 +10,22 @@ const mapStateToProps = ( state, props )=> {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        setFilter : filter => {
-            dispatch({
-                type : 'SET_FILTER',
-                filter
-            })
+        onFilterClick : filter => {
+            dispatch(setFilter(filter))
         }
     }
 };
 
-class DontForgetToFilterButton extends Component {
-
-    render() {
-        let {active, label, filter, setFilter} = this.props;
-        return (
-            <button className={cx(
-                { active : active}
+let DontForgetToFilterButton = ({active, label, filter, onFilterClick}) => {
+    return (
+        <button
+            className={cx(
+                {active: active}
             )}
-                onClick={() => setFilter(filter)}>
-                {label}
-            </button>
-        )
+            onClick={() => onFilterClick(filter)}>
+            {label}
+        </button>
+    )
+};
 
-    }
-}
-DontForgetToFilterButton = connect(mapStateToProps,mapDispatchToProps)(DontForgetToFilterButton);
-
-export default DontForgetToFilterButton
+export default connect(mapStateToProps,mapDispatchToProps)(DontForgetToFilterButton);

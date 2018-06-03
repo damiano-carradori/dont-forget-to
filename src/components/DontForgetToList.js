@@ -1,9 +1,9 @@
-import React, { Component }from 'react'
-import '../style/DontForgetToList.css'
-import cx from 'classnames'
+import React from 'react'
 import { connect } from 'react-redux'
-import DontForgetToItem from "./DontForgetToItem";
 import _ from "lodash";
+import cx from 'classnames'
+import DontForgetToItem from "./DontForgetToItem";
+import '../style/DontForgetToList.css'
 
 const mapStateToProps = state => {
     const filterTasks = ( tasks, filter ) =>{
@@ -23,26 +23,22 @@ const mapStateToProps = state => {
     }
 };
 
-class DontForgetToList extends Component {
-
-    render(){
-        let { tasks } = this.props;
-        return(
-            <div className={cx(
+let DontForgetToList = ({tasks}) => {
+    return (
+        <div
+            className={cx(
                 'dont-forget-to-list',
-                { empty: !tasks.length }
+                {empty: !tasks.length}
             )}>
-                {tasks.map(
-                    task =>
-                        <DontForgetToItem
-                            key={task.id}
-                            {...task}
-                        />
-                )}
-            </div>
-        )
-    }
+            {tasks.map(
+                task =>
+                    <DontForgetToItem
+                        key={task.id}
+                        {...task}
+                    />
+            )}
+        </div>
+    )
+};
 
-}
-DontForgetToList = connect(mapStateToProps)(DontForgetToList);
-export default DontForgetToList
+export default connect(mapStateToProps)(DontForgetToList)

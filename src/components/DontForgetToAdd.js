@@ -1,21 +1,16 @@
 import React from 'react'
-import '../style/DontForgetToAdd.css'
 import { connect } from 'react-redux'
+import { newTask } from '../actionCreators'
+import '../style/DontForgetToAdd.css'
 
 let DontForgetToAdd = ({ dispatch }) => {
-    const addTaks = e => {
+    const addTask = e => {
         if (e.key === 'Enter') {
             e.stopPropagation();
             e.preventDefault();
-
             let text = e.target.value.trim();
             if(text) {
-                let time = new Date();
-                dispatch({
-                    type: 'ADD_TASK',
-                    text: text,
-                    id: time.getTime()
-                });
+                dispatch(newTask(text));
             }
             e.target.value = ''
         }
@@ -25,10 +20,9 @@ let DontForgetToAdd = ({ dispatch }) => {
             className="dont-forget-to-add"
             type="text"
             placeholder="write here and press ⏎ ( Enter ) to add a new task"
-            onKeyDown={addTaks}
+            onKeyDown={addTask}
         />
     )
 };
-DontForgetToAdd = connect()(DontForgetToAdd);
 
-export default DontForgetToAdd
+export default connect()(DontForgetToAdd)

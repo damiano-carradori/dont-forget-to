@@ -1,42 +1,32 @@
-import React, { Component }from 'react'
-import '../style/DontForgetToItem.css'
-import cx from 'classnames'
+import React from 'react'
 import { connect } from 'react-redux'
+import cx from 'classnames'
+import {deleteTask, toggleTask} from "../actionCreators";
+import '../style/DontForgetToItem.css'
 
 const mapDispatchToProps = dispatch => {
     return {
-        handleDone : id => {
-            dispatch({
-                type: 'TOGGLE_TASK',
-                id
-            })
+        onToggle : id => {
+            dispatch(toggleTask(id))
         },
-        handleRemove : id => {
-            dispatch({
-                type: 'DELETE_TASK',
-                id
-            })
+        onDeleteClick : id => {
+            dispatch(deleteTask(id))
         }
     }
 };
 
-class DontForgetToItem extends Component {
-
-    render(){
-        let { id, done, text, handleDone, handleRemove } = this.props;
-        return(
-            <div className={cx(
+let DontForgetToItem = ({ id, done, text, onToggle, onDeleteClick }) => {
+    return (
+        <div
+            className={cx(
                 'dont-forget-to-item',
-                { done : done }
+                {done: done}
             )}>
-                <input type="checkbox" defaultChecked={done} onChange={() => handleDone(id)}/>
-                <span>{text}</span>
-                <button onClick={() => handleRemove(id)}>Delete</button>
-            </div>
-        )
-    }
+            <input type="checkbox" defaultChecked={done} onChange={() => onToggle(id)}/>
+            <span>{text}</span>
+            <button onClick={() => onDeleteClick(id)}>Delete</button>
+        </div>
+    )
+};
 
-}
-DontForgetToItem = connect(null,mapDispatchToProps)(DontForgetToItem);
-
-export default DontForgetToItem
+export default connect(null,mapDispatchToProps)(DontForgetToItem)

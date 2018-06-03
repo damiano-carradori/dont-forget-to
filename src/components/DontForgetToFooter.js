@@ -1,7 +1,7 @@
-import React, { Component }from 'react'
-import '../style/DontForgetToFooter.css'
-import _ from 'lodash';
+import React from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash';
+import '../style/DontForgetToFooter.css'
 
 const mapStateToProps = state => {
     return {
@@ -9,22 +9,16 @@ const mapStateToProps = state => {
     }
 };
 
-class DontForgetToFooter extends Component {
+let DontForgetToFooter = ({ total }) => {
+    return (
+        <div className="dont-forget-to-footer">
+            {total ?
+                `${total} task${total > 1 ? 's' : ''} left` :
+                <span>Great, you have accomplished all your tasks!</span>
+            }
+        </div>
+    )
+};
 
-    render(){
-        let { total } = this.props;
-        return(
-            <div className="dont-forget-to-footer">
-                {total?
-                    `${total} task${total>1?'s':''} left`:
-                    <span>Great, you have accomplished all your tasks!</span>
-                }
-            </div>
-        )
-    }
-
-}
-DontForgetToFooter = connect(mapStateToProps)(DontForgetToFooter);
-
-export default DontForgetToFooter
+export default connect(mapStateToProps)(DontForgetToFooter)
 
