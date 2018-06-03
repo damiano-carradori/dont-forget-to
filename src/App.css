@@ -1,13 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Indie+Flower|Roboto:400,500');
-* {
-    box-sizing: border-box;
-    font-family: 'Indie Flower', cursive;
-}
-body{
-    /*background-color: seashell;*/
-    background-color: #fafafa;
-    font-size: 18px;
-}
 .App {
     text-align: center;
 }
