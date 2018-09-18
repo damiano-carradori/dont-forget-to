@@ -27,7 +27,7 @@ const tasksReducer = ( state = [], action ) => {
             return state
     }
 };
-const filterReducer = ( state = 'SHOW_ALL', action ) => {
+const filterReducer = ( state = 'SHOW_ACTIVE', action ) => {
     switch (action.type) {
         case 'SET_FILTER':
             return action.filter;
