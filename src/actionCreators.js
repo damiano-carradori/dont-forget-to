@@ -24,3 +24,11 @@ export function deleteTask(id) {
         id
     };
 }
+export function reorderTasks( source, destination, filter ) {
+    return {
+        type: 'REORDER_TASKS',
+        source,
+        destination,
+        filter
+    };
+}
