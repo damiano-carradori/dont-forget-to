@@ -2,7 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import cx from 'classnames'
 import {deleteTask, toggleTask} from "../actionCreators";
+import { Draggable } from "react-beautiful-dnd"
 import '../style/DontForgetToItem.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -15,17 +17,24 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-let DontForgetToItem = ({ id, done, text, onToggle, onDeleteClick }) => {
+let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick }) => {
     return (
-        <div
-            className={cx(
-                'dont-forget-to-item',
-                {done: done}
-            )}>
-            <input type="checkbox" defaultChecked={done} onChange={() => onToggle(id)}/>
-            <span>{text}</span>
-            <button onClick={() => onDeleteClick(id)}>Delete</button>
-        </div>
+        <Draggable draggableId={id} index={index}>
+            {provided => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    className={cx(
+                        'dont-forget-to-item',
+                        {done: done}
+                    )}>
+                    <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']} onClick={() => onToggle(id)}/>
+                    <span>{text}</span>
+                    <FontAwesomeIcon className="delete-task" icon="trash" onClick={() => onDeleteClick(id)}/>
+                </div>
+            )}
+        </Draggable>
     )
 };
 

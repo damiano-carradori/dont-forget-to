@@ -5,28 +5,24 @@
     align-items: center;
     background-color: #ffffff;
 }
-.dont-forget-to-item > input[type=checkbox]{
-    margin: 0 8px 0 0;
+.dont-forget-to-item > .toggle-task{
+    cursor: pointer;
+    color: rgba(96, 125, 139, .35);
+}
+.dont-forget-to-item.done > .toggle-task{
+    color: #4caf50;
 }
 .dont-forget-to-item > span{
     font-size: 1em;
     flex: 1 1 auto;
     text-align: left;
+    margin: 0 8px;
 }
 .dont-forget-to-item.done > span{
     color: #dddddd;
     text-decoration: line-through;
 }
-.dont-forget-to-item > button{
-    font-family: 'Roboto', sans-serif;
-    font-size: .625em;
-    font-weight: 500;
-    text-transform: uppercase;
-    background-color: crimson;
-    border: none;
-    border-radius: 3px;
-    color: #fff;
-    padding: 4px 8px;
+.dont-forget-to-item > .delete-task{
     cursor: pointer;
-    margin-left: 8px;
+    color: crimson;
 }
