@@ -7,22 +7,72 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-const tasksReducer = ( state = [], action ) => {
+const taskReducer = ( state, action ) => {
     switch (action.type) {
         case 'ADD_TASK':
-            let newTask = {
+            return {
                 id : action.id,
                 text : action.text,
                 done : false
             };
-            return [ newTask, ...state ];
         case 'TOGGLE_TASK':
-            let task = _.find(state, { id: action.id });
-            let newList = _.filter(state, task => task.id !== action.id );
-            task.done = !task.done;
-            return task.done?[...newList, task]:[task, ...newList];
+            if( state.id !== action.id ){
+                return state;
+            }
+            return {
+                ...state,
+                done : !state.done
+            };
+        default:
+            return state;
+    }
+};
+
+const tasksReducer = ( state = [], action ) => {
+    switch (action.type) {
+        case 'ADD_TASK':
+            return [ taskReducer(undefined,action), ...state ];
+        case 'TOGGLE_TASK':
+            return state.map( task =>
+               taskReducer(task,action)
+            );
         case 'DELETE_TASK':
             return _.filter(state, task => task.id !== action.id );
+        case 'REORDER_TASKS':
+            const convertPositions = ( position, filter ) =>{
+                switch (filter) {
+                    case 'SHOW_ACTIVE':
+                        let activeTasks = _.filter(state, task => !task.done );
+                        return _.findIndex(state, task => activeTasks[position].id === task.id );
+                    case 'SHOW_COMPLETED':
+                        let completedTasks = _.filter(state, task => task.done );
+                        return _.findIndex(state, task => completedTasks[position].id === task.id );
+                    default:
+                        return position;
+                }
+            };
+
+            if( !action.destination ){
+                return state;
+            }
+            let from = convertPositions(action.source.index, action.filter);
+            let to = convertPositions(action.destination.index, action.filter);
+
+            if( from > to ){
+                return [
+                    ...state.slice(0, to),
+                    state[from],
+                    ...state.slice(to, from),
+                    ...state.slice(from + 1)
+                ];
+            } else {
+                return [
+                    ...state.slice(0, from),
+                    ...state.slice(from + 1, to + 1),
+                    state[from],
+                    ...state.slice(to + 1)
+                ];
+            }
         default:
             return state
     }
