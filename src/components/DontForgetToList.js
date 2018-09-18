@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Droppable } from "react-beautiful-dnd"
 import _ from "lodash";
 import cx from 'classnames'
 import DontForgetToItem from "./DontForgetToItem";
@@ -25,19 +26,27 @@ const mapStateToProps = state => {
 
 let DontForgetToList = ({tasks}) => {
     return (
-        <div
-            className={cx(
-                'dont-forget-to-list',
-                {empty: !tasks.length}
-            )}>
-            {tasks.map(
-                task =>
-                    <DontForgetToItem
-                        key={task.id}
-                        {...task}
-                    />
+        <Droppable droppableId="dont-forget-to-list">
+            {provided => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={cx(
+                        'dont-forget-to-list',
+                        {empty: !tasks.length}
+                    )}>
+                    {tasks.map(
+                        ( task, index ) =>
+                            <DontForgetToItem
+                                key={task.id}
+                                {...task}
+                                index={index}
+                            />
+                    )}
+                    {provided.placeholder}
+                </div>
             )}
-        </div>
+        </Droppable>
     )
 };
 
