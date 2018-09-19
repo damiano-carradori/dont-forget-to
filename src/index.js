@@ -51,28 +51,15 @@ const tasksReducer = ( state = [], action ) => {
                         return position;
                 }
             };
-
             if( !action.destination ){
                 return state;
             }
             let from = convertPositions(action.source.index, action.filter);
             let to = convertPositions(action.destination.index, action.filter);
-
-            if( from > to ){
-                return [
-                    ...state.slice(0, to),
-                    state[from],
-                    ...state.slice(to, from),
-                    ...state.slice(from + 1)
-                ];
-            } else {
-                return [
-                    ...state.slice(0, from),
-                    ...state.slice(from + 1, to + 1),
-                    state[from],
-                    ...state.slice(to + 1)
-                ];
-            }
+            let editableState = Array.from(state);
+            let movingTask = editableState.splice(from, 1);
+            editableState.splice(to, 0, ...movingTask );
+            return editableState;
         default:
             return state
     }
