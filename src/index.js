@@ -6,6 +6,12 @@ import _ from 'lodash';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import ApolloClient from "apollo-boost";
+import gql from "graphql-tag";
+
+const client = new ApolloClient({
+    uri: "https://graph-ql-sxqvqzfyvf.now.sh/"
+});
 
 const taskReducer = ( state, action ) => {
     switch (action.type) {
@@ -76,11 +82,30 @@ const reducer = combineReducers({
     tasks : tasksReducer,
     filter : filterReducer
 });
-const store = createStore(
-    reducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()
-);
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
-registerServiceWorker();
+(async () => {
+    let response = await client.query({
+        query: gql`#
+        {
+            tasks {
+                _id
+                text
+                done
+            }
+        }
+        `
+    });
+    let savedTasks = response.data.tasks.map( task => ({ ...task, id: task._id }) );
+
+    const store = createStore(
+        reducer,
+        {
+            tasks : savedTasks
+        },
+        window.__REDUX_DEVTOOLS_EXTENSION__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
+
+    ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+    registerServiceWorker();
+})();
