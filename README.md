@@ -1,6 +1,6 @@
 Don't forget to...
 ==================
-[Click here for a live demo](https://quirky-visvesvaraya-b8a984.netlify.com)
+[Click here for a live demo](https://vigilant-austin-3dd81b.netlify.com/)
 
 I started this project to be more confident with
 [React](https://reactjs.org/)
