@@ -10,7 +10,7 @@ import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
 
 const client = new ApolloClient({
-    uri: "https://graph-ql-sxqvqzfyvf.now.sh/"
+    uri: "https://graph-ql-tmwbyvczsc.now.sh"
 });
 
 const taskReducer = ( state, action ) => {
