@@ -83,29 +83,35 @@ const reducer = combineReducers({
     filter : filterReducer
 });
 
-(async () => {
-    let response = await client.query({
-        query: gql`#
-        {
-            tasks {
-                _id
-                text
-                done
-            }
+let savedTasks = [];
+client.query({
+    query: gql`
+    {
+        tasks {
+            _id
+            text
+            done
         }
-        `
-    });
-    let savedTasks = response.data.tasks.map( task => ({ ...task, id: task._id }) );
+    }
+    `
+}).then(
+    response => {
+        savedTasks = response.data.tasks.map( task => ({ ...task, id: task._id }) );
+    }
+).catch(
+    err => console.log(err)
+).finally(
+    () => {
+        const store = createStore(
+            reducer,
+            {
+                tasks : savedTasks
+            },
+            window.__REDUX_DEVTOOLS_EXTENSION__ &&
+            window.__REDUX_DEVTOOLS_EXTENSION__()
+        );
 
-    const store = createStore(
-        reducer,
-        {
-            tasks : savedTasks
-        },
-        window.__REDUX_DEVTOOLS_EXTENSION__ &&
-        window.__REDUX_DEVTOOLS_EXTENSION__()
-    );
-
-    ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
-    registerServiceWorker();
-})();
+        ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+        registerServiceWorker();
+    }
+);
