@@ -3,6 +3,7 @@
     margin: 0 -4px;
 }
 .dont-forget-to-filter button{
+    outline: none;
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
     font-weight: 500;
