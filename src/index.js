@@ -8,6 +8,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
+import { ApolloProvider } from "react-apollo";
 
 const client = new ApolloClient({
     uri: "https://graph-ql-tmwbyvczsc.now.sh"
@@ -111,7 +112,7 @@ client.query({
             window.__REDUX_DEVTOOLS_EXTENSION__()
         );
 
-        ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+        ReactDOM.render(<Provider store={store}><ApolloProvider client={client}><App /></ApolloProvider></Provider>, document.getElementById('root'));
         registerServiceWorker();
     }
 );
