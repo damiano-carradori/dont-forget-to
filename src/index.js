@@ -11,7 +11,7 @@ import gql from "graphql-tag";
 import { ApolloProvider } from "react-apollo";
 
 const client = new ApolloClient({
-    uri: "https://graph-ql-tmwbyvczsc.now.sh"
+    uri: "https://graph-ql-fargdjqiqg.now.sh"
 });
 
 const taskReducer = ( state, action ) => {
