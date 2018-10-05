@@ -1,6 +1,7 @@
 .dont-forget-to-filter{
     display: flex;
     margin: 0 -4px;
+    flex: 0 0 auto;
 }
 .dont-forget-to-filter button{
     outline: none;

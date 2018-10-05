@@ -1,8 +1,7 @@
 .dont-forget-to-list {
     overflow: auto;
-    max-height: 60vh;
 }
 .dont-forget-to-list:not(.empty) {
-    padding: 5px;
-    margin: -5px;
+    padding: 0 5px;
+    margin: 0 -5px;
 }
