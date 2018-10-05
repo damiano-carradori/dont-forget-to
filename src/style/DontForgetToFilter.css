@@ -1,32 +1,27 @@
 .dont-forget-to-filter{
     display: flex;
+    margin: 0 -4px;
+    flex: 0 0 auto;
 }
 .dont-forget-to-filter button{
+    outline: none;
     font-family: 'Roboto', sans-serif;
-    font-size: .625em;
+    font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
     background-color: transparent;
     border: 1px solid transparent;
-    color: #9c27b0;
-    /*border-radius: 3px;*/
-    padding: 4px 8px;
+    color: #607d8b;
+    padding: 8px;
     cursor: pointer;
-    flex: 1 0 auto;
-}
-.dont-forget-to-filter button:first-child{
-    border-radius: 3px 0 0 3px;
-}
-.dont-forget-to-filter button:last-child{
-    border-radius: 0 3px 3px 0;
+    flex: 1 1 0;
+    margin: 0 4px;
+    border-radius: 3px;
 }
 .dont-forget-to-filter button:hover{
-    border-color: #9c27b0;
+    border-color: #607d8b;
 }
 .dont-forget-to-filter button.active{
-    background-color: #9c27b0;
-    /*border: none;*/
+    background-color: #607d8b;
     color: #fafafa;
-    /*border: 1px solid #673ab7;*/
-    /*border: 1px solid #9c27b0;*/
 }

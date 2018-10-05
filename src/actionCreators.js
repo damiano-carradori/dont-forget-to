@@ -1,8 +1,7 @@
-export function newTask(text) {
-    let time = new Date();
+export function newTask(id, text) {
     return {
         type: 'ADD_TASK',
-        id: time.getTime(),
+        id,
         text
     };
 }

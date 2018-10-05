@@ -17,7 +17,7 @@ class App extends Component {
                 <main className="App-main">
                     <DontForgetTo/>
                 </main>
-                <footer>
+                <footer className="App-footer">
                     &copy; 2018 - Made with <span role="img" aria-label="love">❤️</span> and <span role="img" aria-label="React">⚛️</span> by Damiano Carradori
                 </footer>
             </div>

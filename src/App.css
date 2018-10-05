@@ -1,13 +1,22 @@
 .App {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.App-header{
     text-align: center;
 }
-
 .App-title {
-    font-size: 2em;
+    margin: auto;
+    padding: .67em 0 16px;
 }
 
 .App-main {
-    height: 80vh;
     display: flex;
     justify-content: center;
+    flex: 1 1 auto;
+}
+.App-footer{
+    text-align: center;
+    padding: 4px 0;
 }

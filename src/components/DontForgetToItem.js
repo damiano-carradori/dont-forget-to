@@ -5,6 +5,19 @@ import {deleteTask, toggleTask} from "../actionCreators";
 import { Draggable } from "react-beautiful-dnd"
 import '../style/DontForgetToItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+
+const DELETE_TASK = gql`
+    mutation DeleteTask($id: ID!) {
+        deleteTask(id: $id)
+    }
+`;
+const UPDATE_TASK = gql`
+    mutation UpdateTask($id: ID!, $done: Boolean!) {
+        updateTask(id: $id, done: $done)
+    }
+`;
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -29,9 +42,24 @@ let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick }) => {
                         'dont-forget-to-item',
                         {done: done}
                     )}>
-                    <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']} onClick={() => onToggle(id)}/>
+                    <Mutation mutation={UPDATE_TASK}>
+                        {(updateTask)=>(
+                            <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']} onClick={() => {
+                                updateTask({ variables: { id, done: !done } });
+                                onToggle(id);
+                            }}/>
+                        )}
+                        </Mutation>
+
                     <span>{text}</span>
-                    <FontAwesomeIcon className="delete-task" icon="trash" onClick={() => onDeleteClick(id)}/>
+                    <Mutation mutation={DELETE_TASK}>
+                        {(deleteTask) => (
+                            <FontAwesomeIcon className="delete-task" icon="trash" onClick={() => {
+                                deleteTask({ variables: { id } });
+                                onDeleteClick(id);
+                            }}/>
+                        )}
+                    </Mutation>
                 </div>
             )}
         </Draggable>
