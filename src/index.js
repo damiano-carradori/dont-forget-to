@@ -30,6 +30,14 @@ const taskReducer = ( state, action ) => {
                 ...state,
                 done : !state.done
             };
+        case 'EDIT_TASK':
+            if( state.id !== action.id ){
+                return state;
+            }
+            return {
+                ...state,
+                text : action.text
+            };
         default:
             return state;
     }
@@ -40,6 +48,7 @@ const tasksReducer = ( state = [], action ) => {
         case 'ADD_TASK':
             return [ taskReducer(undefined,action), ...state ];
         case 'TOGGLE_TASK':
+        case 'EDIT_TASK':
             return state.map( task =>
                taskReducer(task,action)
             );
