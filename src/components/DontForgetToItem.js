@@ -53,8 +53,10 @@ let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick, onEdit
                             }}/>
                         )}
                     </Mutation>
-
-                    <span>{text}</span>
+                    <input defaultValue={text} type="text" disabled={done} onKeyUp={ e => {
+                        let newText = e.target.value;
+                        onEdit(id,newText);
+                    }}/>
                     <Mutation mutation={DELETE_TASK}>
                         {(deleteTask) => (
                             <FontAwesomeIcon className="delete-task" icon="trash" onClick={() => {
