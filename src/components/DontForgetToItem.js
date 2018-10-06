@@ -43,19 +43,19 @@ let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick }) => {
                         {done: done}
                     )}>
                     <Mutation mutation={UPDATE_TASK}>
-                        {(updateTask)=>(
+                        {(updateTask) => (
                             <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']} onClick={() => {
-                                updateTask({ variables: { id, done: !done } });
+                                updateTask({variables: {id, done: !done}});
                                 onToggle(id);
                             }}/>
                         )}
-                        </Mutation>
+                    </Mutation>
 
                     <span>{text}</span>
                     <Mutation mutation={DELETE_TASK}>
                         {(deleteTask) => (
                             <FontAwesomeIcon className="delete-task" icon="trash" onClick={() => {
-                                deleteTask({ variables: { id } });
+                                deleteTask({variables: {id}});
                                 onDeleteClick(id);
                             }}/>
                         )}
