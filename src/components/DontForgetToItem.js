@@ -40,11 +40,13 @@ let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick, onEdit
                 <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    {...provided.dragHandleProps}
                     className={cx(
                         'dont-forget-to-item',
                         {done: done}
                     )}>
+                    <div {...provided.dragHandleProps} className="drag-task">
+                        <FontAwesomeIcon icon="ellipsis-v"/>
+                    </div>
                     <Mutation mutation={UPDATE_TASK}>
                         {(updateTask) => (
                             <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']} onClick={() => {

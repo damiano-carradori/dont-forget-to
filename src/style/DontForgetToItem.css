@@ -1,5 +1,4 @@
 .dont-forget-to-item{
-    padding: 8px 16px;
     display: flex;
     align-items: center;
     background-color: #ffffff;
@@ -8,9 +7,19 @@
     border-radius: 3px;
     outline: none;
 }
+.dont-forget-to-item > .drag-task{
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    padding: 0 6px;
+    background-color: rgba(96, 125, 139, 0.15);
+    color: rgba(0, 0, 0, 0.5);
+    border-right: 1px solid rgba(0,0,0,.1);
+}
 .dont-forget-to-item > .toggle-task{
     cursor: pointer;
     color: rgba(96, 125, 139, .35);
+    margin: 0 8px;
 }
 .dont-forget-to-item.done > .toggle-task{
     color: #4caf50;
@@ -19,7 +28,7 @@
     font-size: 1em;
     flex: 1 1 auto;
     text-align: left;
-    margin: 0 12px;
+    margin: 6px 0;
     border: none;
     padding: 4px 1em;
     outline: none;
@@ -39,4 +48,5 @@
 .dont-forget-to-item > .delete-task{
     cursor: pointer;
     color: crimson;
+    margin: 0 8px;
 }
