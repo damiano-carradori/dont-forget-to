@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import cx from 'classnames'
-import {deleteTask, toggleTask} from "../actionCreators";
+import {deleteTask, toggleTask, editTask} from "../actionCreators";
 import { Draggable } from "react-beautiful-dnd"
 import '../style/DontForgetToItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -26,11 +26,14 @@ const mapDispatchToProps = dispatch => {
         },
         onDeleteClick : id => {
             dispatch(deleteTask(id))
+        },
+        onEdit : ( id, text ) => {
+            dispatch(editTask(id, text))
         }
     }
 };
 
-let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick }) => {
+let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick, onEdit }) => {
     return (
         <Draggable draggableId={id} index={index}>
             {provided => (
