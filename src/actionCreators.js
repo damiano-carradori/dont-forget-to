@@ -17,6 +17,13 @@ export function toggleTask(id) {
         id
     };
 }
+export function editTask(id, text) {
+    return {
+        type: 'EDIT_TASK',
+        id,
+        text
+    };
+}
 export function deleteTask(id) {
     return {
         type: 'DELETE_TASK',
