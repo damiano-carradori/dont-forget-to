@@ -12,7 +12,7 @@ to trace your tasks.
 
 Next steps
 ----------
-* Add a sign up
+* Add a sign up / sign in
 * Add more details to the task
 * Add the possibility to create more dashboard
 * Make the tasks draggable between dashboards
