@@ -14,8 +14,8 @@ const DELETE_TASK = gql`
     }
 `;
 const UPDATE_TASK = gql`
-    mutation UpdateTask($id: ID!, $done: Boolean!) {
-        updateTask(id: $id, done: $done)
+    mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
+        updateTask(id: $id, text: $text, done: $done)
     }
 `;
 
@@ -55,10 +55,15 @@ let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick, onEdit
                             }}/>
                         )}
                     </Mutation>
-                    <input defaultValue={text} type="text" disabled={done} onKeyUp={ e => {
-                        let newText = e.target.value;
-                        onEdit(id,newText);
-                    }}/>
+                    <Mutation mutation={UPDATE_TASK}>
+                        {(updateTask)=>(
+                            <input defaultValue={text} type="text" disabled={done} onKeyUp={ e => {
+                                let text = e.target.value;
+                                onEdit(id,text);
+                                updateTask({variables: {id, text}});
+                            }}/>
+                        )}
+                    </Mutation>
                     <Mutation mutation={DELETE_TASK}>
                         {(deleteTask) => (
                             <FontAwesomeIcon className="delete-task" icon="trash" onClick={() => {
