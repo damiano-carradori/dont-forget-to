@@ -12,7 +12,8 @@ to trace your tasks.
 
 Next steps
 ----------
+* Add a sign up
 * Add more details to the task
 * Add the possibility to create more dashboard
-* Make the tasks draggable to move between dashboards
+* Make the tasks draggable between dashboards
 * ...
