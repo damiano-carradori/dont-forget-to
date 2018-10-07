@@ -1,0 +1,20 @@
+.dont-forget-to-sign-in {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    display: flex;
+    align-items: center;
+    padding: 4px 4px 4px 1em;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 2em;
+}
+
+.dont-forget-to-sign-in .user-name {
+    margin-right: 1em;
+}
+
+.dont-forget-to-sign-in img{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
