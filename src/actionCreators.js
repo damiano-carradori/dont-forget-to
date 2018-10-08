@@ -5,6 +5,13 @@ export function newTask(id, text) {
         text
     };
 }
+export function createTask(text, user) {
+    return {
+        type: 'ADD_TASK_REQUESTED',
+        text,
+        user
+    }
+}
 export function setFilter(filter) {
     return {
         type : 'SET_FILTER',
