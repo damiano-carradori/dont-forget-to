@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga'
 
 import reducer from './reducers/reducers';
 import mySaga from './sagas/sagas';
@@ -16,35 +17,21 @@ const client = new ApolloClient({
     uri: "https://graph-ql-fargdjqiqg.now.sh"
 });
 
+const sagaMiddleware = createSagaMiddleware();
+
+const logger = store => next => action => {
+    console.log('dispatching', action)
+    let result = next(action)
+    console.log('next state', store.getState())
+    return result
+}
+
 const store = createStore(
     reducer,
-    applyMiddleware(mySaga) &&
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()
+    applyMiddleware(logger, sagaMiddleware)
 );
+
+sagaMiddleware.run(mySaga);
 
 ReactDOM.render(<Provider store={store}><ApolloProvider client={client}><App /></ApolloProvider></Provider>, document.getElementById('root'));
 registerServiceWorker();
-
-// let savedTasks = [];
-// client.query({
-//     query: gql`
-//     {
-//         tasks {
-//             _id
-//             text
-//             done
-//         }
-//     }
-//     `
-// }).then(
-//     response => {
-//         savedTasks = response.data.tasks.map( task => ({ ...task, id: task._id }) );
-//     }
-// ).catch(
-//     err => console.log(err)
-// ).finally(
-//     () => {
-//
-//     }
-// );
