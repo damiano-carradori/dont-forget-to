@@ -1,11 +1,18 @@
 // import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import { put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
+import { getUser } from './graphql'
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* fetchUser(action) {
     try {
         // const user = yield call(Api.fetchUser, action.payload.userId);
-        yield put({type: "USER_FETCH_SUCCEEDED", user: { name : 'Damiano' } });
+        const tasks = yield call(getUser);
+        const user = {
+            username : 'Damiano',
+            profile_picture : 'https://pbs.twimg.com/profile_images/981475488962146304/nUnzND-9_bigger.jpg',
+            tasks : tasks
+        };
+        yield put({type: "USER_FETCH_SUCCEEDED", user });
     } catch (e) {
         yield put({type: "USER_FETCH_FAILED", message: e.message});
     }
