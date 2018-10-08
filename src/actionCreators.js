@@ -38,3 +38,8 @@ export function reorderTasks( source, destination, filter ) {
         filter
     };
 }
+export function signIn() {
+    return {
+        type: 'USER_FETCH_REQUESTED'
+    }
+}
