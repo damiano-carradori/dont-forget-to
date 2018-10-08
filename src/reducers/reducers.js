@@ -63,6 +63,11 @@ const tasksReducer = ( state = [], action ) => {
             let movingTask = editableState.splice(from, 1);
             editableState.splice(to, 0, ...movingTask );
             return editableState;
+        case 'USER_FETCH_SUCCEEDED':
+            if (!action.user.tasks.length){
+                return state;
+            }
+            return action.user.tasks.reduce( ( tasks, task) => [ ...tasks, task ], []);
         default:
             return state
     }
