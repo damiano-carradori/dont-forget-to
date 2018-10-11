@@ -2,51 +2,95 @@ import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
 
 const client = new ApolloClient({
-    uri: "https://graph-ql-fargdjqiqg.now.sh"
+    uri: "https://apollo-graphql-iqecpfrrdc.now.sh"
 });
 
+const GET_USER = gql`
+    query getUser($id: ID!){
+        user(id: $id){
+            id
+            tasks{
+                id
+                position
+                text
+                done
+            }
+        }
+    }
+`;
 const ADD_TASK = gql`
-    mutation AddTask($text: String!) {
-        addTask(text: $text) {
-            _id
+    mutation AddTask($user: ID!, $text: String!) {
+        addTask(user: $user, text: $text) {
+            id
+            position
+            text
+            done
+        }
+    }
+`;
+const DELETE_TASK = gql`
+    mutation DeleteTask($id: ID!) {
+        deleteTask(id: $id) {
+            id
+            position
+            text
+            done
+        }
+    }
+`;
+const UPDATE_TASK = gql`
+    mutation UpdateTask($id: ID!, $text: String, $done: Boolean, $position: Int) {
+        updateTask(id: $id, text: $text, done: $done, position: $position) {
+            id
+            position
             text
             done
         }
     }
 `;
 
-const getUser = async () => {
-    let response = await client.query({
-        query: gql`
-            {
-                tasks {
-                    _id
-                    text
-                    done
-                }
+const GraphQL = {
+    getUser: async id => {
+        let response = await client.query({
+            query: GET_USER,
+            variables: {id}
+        });
+        return response.data.user;
+    },
+    addTask: async (user, text) => {
+        let response = await client.mutate({
+            mutation: ADD_TASK,
+            variables : { text }
+        });
+        // response:
+        // {
+        //     data: {
+        //         addTask {
+        //
+        //         }
+        //     }
+        // }
+        return response.data.addTask;
+    },
+    deleteTask: async id => {
+        let response = await client.mutate({
+            mutation: DELETE_TASK,
+            variables : { id }
+        });
+        return response.data.deleteTask;
+    },
+    updateTask: async (id, text, done, position) => {
+        let response = await client.mutate({
+            mutation: UPDATE_TASK,
+            variables : {
+                id,
+                ...(text!==undefined && {text}),
+                ...(done!==undefined && {done}),
+                ...(position!==undefined && {position}),
             }
-        `
-    });
-    return response.data.tasks.map( task => ({ ...task, id: task._id }) );
+        });
+        return response.data.updateTask;
+    }
 };
 
-const addTask = async text => {
-    let response = await client.mutate({
-        mutation: ADD_TASK,
-        variables : { text }
-    });
-    // response:
-    // {
-    //     data: {
-    //         addTask {
-    //
-    //         }
-    //     }
-    // }
-    return response.data.addTask;
-};
-
-export {
-    getUser,
-    addTask
-}
+export default GraphQL
