@@ -1,31 +1,21 @@
-// import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { getUser, addTask } from './graphql'
+import GraphQL from './graphql'
 
-// worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* fetchUser(action) {
     try {
-        // const user = yield call(Api.fetchUser, action.payload.userId);
-        const tasks = yield call(getUser);
-        const user = {
-            username : 'Damiano',
-            profile_picture : 'https://pbs.twimg.com/profile_images/981475488962146304/nUnzND-9_bigger.jpg',
-            tasks : tasks
-        };
+        const user = yield call(GraphQL.getUser, action.id);
         yield put({type: "USER_FETCH_SUCCEEDED", user });
     } catch (e) {
         yield put({type: "USER_FETCH_FAILED", message: e.message});
     }
 }
-function* createTask(action) {
+function* addTask(action) {
     if( action.user === null ){
         let id = +new Date();
         yield put({type: "ADD_TASK", text: action.text, id });
     } else {
         try {
-            let response = yield call(addTask, action.text);
-            //{_id: "5bbb871114e043006208c62b", text: "test 4", done: false, __typename: "Task"}
-            console.log(response);
+            let response = yield call(GraphQL.addTask, action.text);
             yield put({
                 type: "ADD_TASK",
                 ...response,
@@ -36,24 +26,66 @@ function* createTask(action) {
         }
     }
 }
-/*
-  Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
-  Allows concurrent fetches of user.
-*/
-function* mySaga() {
-    yield takeEvery("USER_FETCH_REQUESTED", fetchUser);
-    yield takeEvery("ADD_TASK_REQUESTED", createTask);
+function* deleteTask(action) {
+    // TODO: check user id before perform the deletion
+    try{
+        let response = yield call(GraphQL.deleteTask, action.id);
+        console.log(response);
+        yield put({
+            type: "DELETE_TASK",
+            ...response
+        });
+    } catch (e) {
+        yield put({type: "DELETE_TASK_FAILED", message: e.message});
+    }
+}
+function* editTask(action) {
+    // TODO: check user id before perform the edit
+    try{
+        let response = yield call(GraphQL.updateTask, action.id, action.text);
+        yield put({
+            type: "EDIT_TASK",
+            ...response
+        });
+    } catch (e) {
+        yield put({type: "EDIT_TASK_FAILED", message: e.message});
+    }
+}
+function* toggleTask(action) {
+    // TODO: check user id before perform the edit
+    try{
+        // updateTask: async (id, text, done, position) => {
+        //     let response = await client.mutate({
+        //         mutation: UPDATE_TASK,
+        //         variables : {
+        //             id,
+        //             ...(text!==undefined && {text}),
+        //             ...(done!==undefined && {done}),
+        //             ...(position!==undefined && {position}),
+        //         }
+        //     });
+        //     return response.data.updateTask;
+        // }
+        let response = yield call(GraphQL.updateTask, action.id, action.done);
+        yield put({
+            type: "TOGGLE_TASK",
+            ...response
+        });
+    } catch (e) {
+        yield put({type: "TOGGLE_TASK_FAILED", message: e.message});
+    }
 }
 
-/*
-  Alternatively you may use takeLatest.
+function* mySaga() {
 
-  Does not allow concurrent fetches of user. If "USER_FETCH_REQUESTED" gets
-  dispatched while a fetch is already pending, that pending fetch is cancelled
-  and only the latest one will be run.
-*/
-// function* mySaga() {
-//     yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
-// }
+    yield takeEvery("USER_FETCH_REQUESTED", fetchUser);
+
+    yield takeEvery("ADD_TASK_REQUESTED", addTask);
+    yield takeEvery("DELETE_TASK_REQUESTED", deleteTask);
+    yield takeEvery("EDIT_TASK_REQUESTED", editTask);
+    yield takeEvery("TOGGLE_TASK_REQUESTED", toggleTask);
+
+    // yield takeEvery("ADD_TASK_REQUESTED", addTask);
+}
 
 export default mySaga;
