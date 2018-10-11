@@ -24,9 +24,11 @@ export function toggleTask(id) {
         id
     };
 }
-export function editTask(id, text) {
+export function editTask(user, id, text) {
+    let type = (user === null) ? "EDIT_TASK" : "EDIT_TASK_REQUESTED";
     return {
-        type: 'EDIT_TASK',
+        type,
+        user,
         id,
         text
     };
