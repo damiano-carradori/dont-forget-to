@@ -1,39 +1,42 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import cx from 'classnames'
-import {deleteTask, toggleTask, editTask} from "../actionCreators";
+import { deleteTask, toggleTask, editTask } from "../actionCreators";
 import { Draggable } from "react-beautiful-dnd"
 import '../style/DontForgetToItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
 
-const DELETE_TASK = gql`
-    mutation DeleteTask($id: ID!) {
-        deleteTask(id: $id)
-    }
-`;
-const UPDATE_TASK = gql`
-    mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
-        updateTask(id: $id, text: $text, done: $done)
-    }
-`;
-
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
     return {
-        onToggle : id => {
-            dispatch(toggleTask(id))
-        },
-        onDeleteClick : id => {
-            dispatch(deleteTask(id))
-        },
-        onEdit : ( id, text ) => {
-            dispatch(editTask(id, text))
-        }
+        user: state.user
     }
 };
 
-let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick, onEdit }) => {
+const mapDispatchToProps = dispatch => {
+    return {
+        onToggle: (user, id) => {
+            dispatch(toggleTask(user, id))
+        },
+        onDeleteClick: (user, id) => {
+            dispatch(deleteTask(user, id))
+        },
+        onEdit: (user, id, text) => {
+            dispatch(editTask(user, id, text))
+        }
+    }
+};
+const DontForgetToItem = ({user, index, id, done, text, onToggle, onDeleteClick, onEdit}) => {
+    const WAIT_INTERVAL = 1000;
+    let timer = null;
+
+    const inputChange = e => {
+        let text = e.target.value;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            onEdit(user, id, text);
+        }, WAIT_INTERVAL);
+    };
+
     return (
         <Draggable draggableId={id} index={index}>
             {provided => (
@@ -47,35 +50,15 @@ let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick, onEdit
                     <div {...provided.dragHandleProps} className="drag-task">
                         <FontAwesomeIcon icon="ellipsis-v"/>
                     </div>
-                    <Mutation mutation={UPDATE_TASK}>
-                        {(updateTask) => (
-                            <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']} onClick={() => {
-                                updateTask({variables: {id, done: !done}});
-                                onToggle(id);
-                            }}/>
-                        )}
-                    </Mutation>
-                    <Mutation mutation={UPDATE_TASK}>
-                        {(updateTask)=>(
-                            <input defaultValue={text} type="text" disabled={done} onKeyUp={ e => {
-                                let text = e.target.value;
-                                onEdit(id,text);
-                                updateTask({variables: {id, text}});
-                            }}/>
-                        )}
-                    </Mutation>
-                    <Mutation mutation={DELETE_TASK}>
-                        {(deleteTask) => (
-                            <FontAwesomeIcon className="delete-task" icon="trash" onClick={() => {
-                                deleteTask({variables: {id}});
-                                onDeleteClick(id);
-                            }}/>
-                        )}
-                    </Mutation>
+                    <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']}
+                                     onClick={() => onToggle(user, id)}/>
+                    <input defaultValue={text} type="text" disabled={done} onKeyUp={inputChange}/>
+                    <FontAwesomeIcon className="delete-task" icon="trash"
+                                     onClick={() => onDeleteClick(user, id)}/>
                 </div>
             )}
         </Draggable>
     )
 };
 
-export default connect(null,mapDispatchToProps)(DontForgetToItem)
+export default connect(mapStateToProps,mapDispatchToProps)(DontForgetToItem)
