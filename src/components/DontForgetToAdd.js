@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { createTask } from '../actionCreators'
+import { addTask } from '../actionCreators'
 import '../style/DontForgetToAdd.css'
 
 const mapStateToProps = state => {
@@ -9,14 +9,14 @@ const mapStateToProps = state => {
     }
 };
 
-let DontForgetToAdd = ({ user, dispatch }) => {
-    const addTask = e => {
+const DontForgetToAdd = ({ user, dispatch }) => {
+    const onEnter = e => {
         if (e.key === 'Enter') {
             e.stopPropagation();
             e.preventDefault();
             let text = e.target.value.trim();
             if (text) {
-                dispatch(createTask(text, user));
+                dispatch(addTask(text, user));
             }
             e.target.value = ''
         }
@@ -27,7 +27,7 @@ let DontForgetToAdd = ({ user, dispatch }) => {
             className="dont-forget-to-add"
             type="text"
             placeholder="write here and press ⏎ ( Enter ) to add a new task"
-            onKeyDown={addTask}
+            onKeyDown={onEnter}
         />
     )
 };
