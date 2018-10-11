@@ -53,6 +53,7 @@ export function reorderTasks( source, destination, filter ) {
 }
 export function signIn() {
     return {
-        type: 'USER_FETCH_REQUESTED'
+        type: "USER_FETCH_REQUESTED",
+        id: "5bbe1f347b23411c77e0b544"
     }
 }
