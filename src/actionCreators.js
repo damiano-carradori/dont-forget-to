@@ -31,9 +31,11 @@ export function editTask(id, text) {
         text
     };
 }
-export function deleteTask(id) {
+export function deleteTask(user, id) {
+    let type = (user === null) ? "DELETE_TASK" : "DELETE_TASK_REQUESTED";
     return {
-        type: 'DELETE_TASK',
+        type,
+        user,
         id
     };
 }
