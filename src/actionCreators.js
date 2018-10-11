@@ -18,9 +18,11 @@ export function setFilter(filter) {
         filter
     };
 }
-export function toggleTask(id) {
+export function toggleTask(user, id) {
+    let type = (user === null) ? "TOGGLE_TASK" : "TOGGLE_TASK_REQUESTED";
     return {
-        type: 'TOGGLE_TASK',
+        type,
+        user,
         id
     };
 }
