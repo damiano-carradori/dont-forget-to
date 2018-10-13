@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        filter: state.filter
     }
 };
 
