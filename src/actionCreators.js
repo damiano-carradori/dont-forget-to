@@ -13,12 +13,13 @@ export function setFilter(filter) {
         filter
     };
 }
-export function toggleTask(user, id) {
+export function toggleTask(user, id, done) {
     let type = (user === null) ? "TOGGLE_TASK" : "TOGGLE_TASK_REQUESTED";
     return {
         type,
         user,
-        id
+        id,
+        done
     };
 }
 export function editTask(user, id, text) {
