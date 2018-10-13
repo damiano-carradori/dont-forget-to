@@ -9,6 +9,8 @@ const GET_USER = gql`
     query getUser($id: ID!){
         user(id: $id){
             id
+            username
+            profile_picture
             tasks{
                 id
                 position
