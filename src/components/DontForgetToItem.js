@@ -15,8 +15,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onToggle: (user, id) => {
-            dispatch(toggleTask(user, id))
+        onToggle: (user, id, done) => {
+            dispatch(toggleTask(user, id, done))
         },
         onDeleteClick: (user, id) => {
             dispatch(deleteTask(user, id))
@@ -66,7 +66,7 @@ const DontForgetToItem = ({user, filter, id, position, text, done, onToggle, onD
                         <FontAwesomeIcon icon="ellipsis-v"/>
                     </div>
                     <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']}
-                                     onClick={() => onToggle(user, id)}/>
+                                     onClick={() => onToggle(user, id, !done)}/>
                     <input defaultValue={text} type="text" disabled={done} onKeyUp={inputChange}/>
                     <FontAwesomeIcon className="delete-task" icon="trash"
                                      onClick={() => onDeleteClick(user, id)}/>
