@@ -6,7 +6,7 @@ const taskReducer = ( state, action ) => {
         case 'ADD_TASK':
             return {
                 id: action.id,
-                position: action.position,
+                position: 0,
                 text: action.text,
                 done: false
             };
