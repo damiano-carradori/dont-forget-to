@@ -57,6 +57,19 @@ function* toggleTask({id, done}) {
         yield put({type: "TOGGLE_TASK_FAILED", message: e.message});
     }
 }
+function* reorderTasks({user, source, destination}) {
+    // TODO: check user id before perform the edit
+    try {
+        let response = yield call(GraphQL.updateTask);
+        yield put({
+            type: "REORDER_TASKS",
+            source,
+            destination
+        });
+    } catch (e) {
+        yield put({type: "REORDER_TASKS_FAILED", message: e.message});
+    }
+}
 
 function* mySaga() {
 
@@ -66,8 +79,7 @@ function* mySaga() {
     yield takeEvery("DELETE_TASK_REQUESTED", deleteTask);
     yield takeEvery("EDIT_TASK_REQUESTED", editTask);
     yield takeEvery("TOGGLE_TASK_REQUESTED", toggleTask);
-
-    // yield takeEvery("ADD_TASK_REQUESTED", addTask);
+    yield takeEvery("REORDER_TASKS_REQUESTED", reorderTasks);
 }
 
 export default mySaga;
