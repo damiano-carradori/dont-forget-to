@@ -10,23 +10,23 @@ import { reorderTasks } from "../actionCreators";
 
 const mapStateToProps = state => {
     return {
-        filter : state.filter
+        user: state.user
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onReorder: (source, destination, filter) => {
-            dispatch(reorderTasks(source, destination, filter))
+        onReorder: (source, destination, user) => {
+            dispatch(reorderTasks(source, destination, user))
         }
     }
 };
 
-let DontForgetTo = ({ onReorder, filter }) => {
+const DontForgetTo = ({ onReorder, user }) => {
     return (
         <DragDropContext onDragEnd={result => {
             let {source, destination} = result;
-            onReorder(source, destination, filter);
+            onReorder(source, destination, user);
         }}>
             <div className="dont-forget-to-container">
                 <DontForgetToAdd/>
