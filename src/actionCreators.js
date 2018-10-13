@@ -38,13 +38,16 @@ export function deleteTask(user, id) {
         id
     };
 }
-export function reorderTasks( source, destination, filter ) {
-    return {
-        type: 'REORDER_TASKS',
-        source,
-        destination,
-        filter
-    };
+export function reorderTasks( source, destination, user ) {
+    if( destination ) {
+        let type = (user === null) ? "REORDER_TASKS" : "REORDER_TASKS_REQUESTED";
+        return {
+            type,
+            source,
+            destination,
+            user
+        };
+    }
 }
 export function signIn() {
     return {
