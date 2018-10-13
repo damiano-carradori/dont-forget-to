@@ -5,9 +5,10 @@ const taskReducer = ( state, action ) => {
     switch (action.type) {
         case 'ADD_TASK':
             return {
-                id : action.id,
-                text : action.text,
-                done : false
+                id: action.id,
+                position: action.position,
+                text: action.text,
+                done: false
             };
         case 'TOGGLE_TASK':
             if( state.id !== action.id ){
