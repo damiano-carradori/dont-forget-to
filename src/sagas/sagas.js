@@ -33,10 +33,10 @@ function* deleteTask(action) {
         yield put({type: "DELETE_TASK_FAILED", message: e.message});
     }
 }
-function* editTask(action) {
+function* editTask({id, text}) {
     // TODO: check user id before perform the edit
-    try{
-        let response = yield call(GraphQL.updateTask, action.id, action.text);
+    try {
+        let response = yield call(GraphQL.updateTask, id, {text});
         yield put({
             type: "EDIT_TASK",
             ...response
@@ -45,22 +45,10 @@ function* editTask(action) {
         yield put({type: "EDIT_TASK_FAILED", message: e.message});
     }
 }
-function* toggleTask(action) {
+function* toggleTask({id, done}) {
     // TODO: check user id before perform the edit
-    try{
-        // updateTask: async (id, text, done, position) => {
-        //     let response = await client.mutate({
-        //         mutation: UPDATE_TASK,
-        //         variables : {
-        //             id,
-        //             ...(text!==undefined && {text}),
-        //             ...(done!==undefined && {done}),
-        //             ...(position!==undefined && {position}),
-        //         }
-        //     });
-        //     return response.data.updateTask;
-        // }
-        let response = yield call(GraphQL.updateTask, action.id, action.done);
+    try {
+        let response = yield call(GraphQL.updateTask, id, {done});
         yield put({
             type: "TOGGLE_TASK",
             ...response
