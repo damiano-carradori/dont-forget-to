@@ -34,7 +34,10 @@ const taskReducer = ( state, action ) => {
 const tasksReducer = ( state = [], action ) => {
     switch (action.type) {
         case 'ADD_TASK':
-            return [ taskReducer(undefined,action), ...state ];
+            return [
+                taskReducer(undefined, action),
+                ...(state.map(task => ({...task, position: ++task.position})))
+            ];
         case 'TOGGLE_TASK':
         case 'EDIT_TASK':
             return state.map( task =>
