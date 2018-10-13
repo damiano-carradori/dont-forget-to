@@ -10,12 +10,6 @@ import mySaga from './sagas/sagas';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
-
-const client = new ApolloClient({
-    uri: "https://graph-ql-fargdjqiqg.now.sh"
-});
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -33,5 +27,5 @@ const store = createStore(
 
 sagaMiddleware.run(mySaga);
 
-ReactDOM.render(<Provider store={store}><ApolloProvider client={client}><App /></ApolloProvider></Provider>, document.getElementById('root'));
+ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 registerServiceWorker();
