@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => {
         }
     }
 };
-const DontForgetToItem = ({user, index, id, done, text, onToggle, onDeleteClick, onEdit}) => {
+const DontForgetToItem = ({user, filter, id, position, text, done, onToggle, onDeleteClick, onEdit}) => {
     const WAIT_INTERVAL = 1000;
     let timer = null;
 
@@ -52,7 +52,7 @@ const DontForgetToItem = ({user, index, id, done, text, onToggle, onDeleteClick,
     };
 
     return (
-        <Draggable draggableId={id} index={index}>
+        <Draggable draggableId={id} index={position}>
             {provided => (
                 <div
                     ref={provided.innerRef}
