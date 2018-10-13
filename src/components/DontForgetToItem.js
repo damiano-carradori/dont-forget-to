@@ -38,6 +38,19 @@ const DontForgetToItem = ({user, index, id, done, text, onToggle, onDeleteClick,
         }, WAIT_INTERVAL);
     };
 
+    const visible = (filter, done) => {
+        switch (filter) {
+            case 'SHOW_ALL':
+                return true;
+            case 'SHOW_ACTIVE':
+                return !done;
+            case 'SHOW_COMPLETED':
+                return done;
+            default:
+                return false;
+        }
+    };
+
     return (
         <Draggable draggableId={id} index={index}>
             {provided => (
@@ -46,7 +59,8 @@ const DontForgetToItem = ({user, index, id, done, text, onToggle, onDeleteClick,
                     {...provided.draggableProps}
                     className={cx(
                         'dont-forget-to-item',
-                        {done: done}
+                        {hidden: !visible(filter, done)},
+                        {done}
                     )}>
                     <div {...provided.dragHandleProps} className="drag-task">
                         <FontAwesomeIcon icon="ellipsis-v"/>
