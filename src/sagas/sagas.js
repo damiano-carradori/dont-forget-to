@@ -10,20 +10,14 @@ function* fetchUser(action) {
     }
 }
 function* addTask(action) {
-    if( action.user === null ){
-        let id = +new Date();
-        yield put({type: "ADD_TASK", text: action.text, id });
-    } else {
-        try {
-            let response = yield call(GraphQL.addTask, action.text);
-            yield put({
-                type: "ADD_TASK",
-                ...response,
-                id: response._id
-            });
-        } catch (e) {
-            yield put({type: "ADD_TASK_FAILED", message: e.message});
-        }
+    try {
+        let response = yield call(GraphQL.addTask, action.user.id, action.text);
+        yield put({
+            type: "ADD_TASK",
+            ...response
+        });
+    } catch (e) {
+        yield put({type: "ADD_TASK_FAILED", message: e.message});
     }
 }
 function* deleteTask(action) {
