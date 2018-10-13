@@ -7,6 +7,9 @@
     border-radius: 3px;
     outline: none;
 }
+.dont-forget-to-item.hidden{
+    display: none;
+}
 .dont-forget-to-item > .drag-task{
     display: flex;
     align-self: stretch;
