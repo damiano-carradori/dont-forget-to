@@ -62,7 +62,7 @@ const GraphQL = {
     addTask: async (user, text) => {
         let response = await client.mutate({
             mutation: ADD_TASK,
-            variables : { text }
+            variables: {user, text}
         });
         // response:
         // {
@@ -77,18 +77,18 @@ const GraphQL = {
     deleteTask: async id => {
         let response = await client.mutate({
             mutation: DELETE_TASK,
-            variables : { id }
+            variables: {id}
         });
         return response.data.deleteTask;
     },
-    updateTask: async (id, text, done, position) => {
+    updateTask: async (id, {text, done, position}) => {
         let response = await client.mutate({
             mutation: UPDATE_TASK,
-            variables : {
+            variables: {
                 id,
-                ...(text!==undefined && {text}),
-                ...(done!==undefined && {done}),
-                ...(position!==undefined && {position}),
+                ...(text !== undefined && {text}),
+                ...(done !== undefined && {done}),
+                ...(position !== undefined && {position}),
             }
         });
         return response.data.updateTask;
