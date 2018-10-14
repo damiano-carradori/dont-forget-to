@@ -60,7 +60,7 @@ function* toggleTask({id, done}) {
 function* reorderTasks({user, source, destination}) {
     // TODO: check user id before perform the edit
     try {
-        yield call(GraphQL.moveTask, user, source.index, destination.index);
+        call(GraphQL.moveTask, user.id, source.index, destination.index);
         yield put({
             type: "REORDER_TASKS",
             source,
