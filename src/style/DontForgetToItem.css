@@ -8,7 +8,9 @@
     outline: none;
 }
 .dont-forget-to-item.hidden{
-    display: none;
+    overflow: hidden;
+    visibility: hidden;
+    height: 0;
 }
 .dont-forget-to-item > .drag-task{
     display: flex;
