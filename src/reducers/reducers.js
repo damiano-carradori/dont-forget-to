@@ -44,7 +44,14 @@ const tasksReducer = ( state = [], action ) => {
                 taskReducer(task, action)
             );
         case 'DELETE_TASK':
-            return _.filter(state, task => task.id !== action.id);
+            let toRemove = _.find(state, {id: action.id});
+            return _.filter(
+                state.map(task => ({
+                    ...task,
+                    ...(task.position > toRemove.position && {position: task.position - 1})
+                })),
+                task => task.id !== action.id
+            );
         case 'REORDER_TASKS':
             const convertPositions = (position, filter) => {
                 switch (filter) {
