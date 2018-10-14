@@ -50,6 +50,16 @@ const UPDATE_TASK = gql`
         }
     }
 `;
+const MOVE_TASK = gql`
+    mutation MoveTask($user: String!, $from: Int!, $to: Int!) {
+        moveTask(user: $user, from: $from, to: $to) {
+            id
+            position
+            text
+            done
+        }
+    }
+`;
 
 const GraphQL = {
     getUser: async id => {
@@ -81,17 +91,23 @@ const GraphQL = {
         });
         return response.data.deleteTask;
     },
-    updateTask: async (id, {text, done, position}) => {
+    updateTask: async (id, {text, done}) => {
         let response = await client.mutate({
             mutation: UPDATE_TASK,
             variables: {
                 id,
                 ...(text !== undefined && {text}),
-                ...(done !== undefined && {done}),
-                ...(position !== undefined && {position}),
+                ...(done !== undefined && {done})
             }
         });
         return response.data.updateTask;
+    },
+    moveTask: async (id, from, to) => {
+        let response = await client.mutate({
+            mutation: MOVE_TASK,
+            variables: {id, from, to}
+        });
+        return response.data.moveTask;
     }
 };
 
