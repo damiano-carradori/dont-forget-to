@@ -41,8 +41,8 @@ const DELETE_TASK = gql`
     }
 `;
 const UPDATE_TASK = gql`
-    mutation UpdateTask($id: ID!, $text: String, $done: Boolean, $position: Int) {
-        updateTask(id: $id, text: $text, done: $done, position: $position) {
+    mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
+        updateTask(id: $id, text: $text, done: $done) {
             id
             position
             text
