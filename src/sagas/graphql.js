@@ -102,10 +102,10 @@ const GraphQL = {
         });
         return response.data.updateTask;
     },
-    moveTask: async (id, from, to) => {
+    moveTask: async (user, from, to) => {
         let response = await client.mutate({
             mutation: MOVE_TASK,
-            variables: {id, from, to}
+            variables: {user, from, to}
         });
         return response.data.moveTask;
     }
