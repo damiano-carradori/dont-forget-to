@@ -53,27 +53,14 @@ const tasksReducer = ( state = [], action ) => {
                 task => task.id !== action.id
             );
         case 'REORDER_TASKS':
-            const convertPositions = (position, filter) => {
-                switch (filter) {
-                    case 'SHOW_ACTIVE':
-                        let activeTasks = _.filter(state, task => !task.done);
-                        return _.findIndex(state, task => activeTasks[position].id === task.id);
-                    case 'SHOW_COMPLETED':
-                        let completedTasks = _.filter(state, task => task.done);
-                        return _.findIndex(state, task => completedTasks[position].id === task.id);
-                    default:
-                        return position;
-                }
-            };
-            if (!action.destination) {
-                return state;
-            }
-            let from = convertPositions(action.source.index, action.filter);
-            let to = convertPositions(action.destination.index, action.filter);
-            let editableState = Array.from(state);
-            let movingTask = editableState.splice(from, 1);
-            editableState.splice(to, 0, ...movingTask);
-            return editableState;
+            let from = action.source.index;
+            let to = action.destination.index;
+            let [others, movingTask] = _.partition(state, task => task.position !== from);
+            others.splice(to, 0, ...movingTask);
+            return others.map((task, index) => ({
+                ...task,
+                ...(task.map !== index && {position: index})
+            }));
         case 'USER_FETCH_SUCCEEDED':
             if (!action.user.tasks.length) {
                 return state;
