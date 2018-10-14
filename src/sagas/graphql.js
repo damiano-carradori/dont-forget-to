@@ -2,7 +2,7 @@ import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
 
 const client = new ApolloClient({
-    uri: "https://apollo-graphql-iqecpfrrdc.now.sh"
+    uri: "https://apollo-graphql-yijiohtkcg.now.sh"
 });
 
 const GET_USER = gql`
