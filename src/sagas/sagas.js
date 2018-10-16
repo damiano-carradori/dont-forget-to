@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { fork, call, put, takeEvery } from 'redux-saga/effects'
 import GraphQL from './graphql'
 
 function* fetchUser(action) {
@@ -60,7 +60,7 @@ function* toggleTask({id, done}) {
 function* reorderTasks({user, source, destination}) {
     // TODO: check user id before perform the edit
     try {
-        call(GraphQL.moveTask, user.id, source.index, destination.index);
+        yield fork(GraphQL.moveTask, user.id, source.index, destination.index);
         yield put({
             type: "REORDER_TASKS",
             source,
