@@ -56,3 +56,8 @@ export function signIn() {
         id: "5bbe1f347b23411c77e0b544"
     }
 }
+export function toggleSignIn() {
+    return {
+        type: "TOGGLE_SIGN_IN"
+    }
+}
