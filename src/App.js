@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import DontForgetTo from "./components/DontForgetTo";
 import DontForgetToSignIn from "./components/DontForgetToSignIn";
+import DontForgetToSignInSide from "./components/DontForgetToSignInSide";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTrash, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
@@ -13,6 +14,7 @@ class App extends Component {
         return (
             <div className="App">
                 <DontForgetToSignIn/>
+                <DontForgetToSignInSide/>
                 <header className="App-header">
                     <h1 className="App-title">Don't forget to...</h1>
                 </header>
