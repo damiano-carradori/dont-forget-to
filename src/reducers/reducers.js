@@ -79,10 +79,18 @@ const filterReducer = ( state = 'SHOW_ACTIVE', action ) => {
     }
 };
 
-const userReducer = ( state = null, action ) => {
+const userReducer = ( state = { account: null, sideOpen: false }, action ) => {
     switch (action.type) {
         case 'USER_FETCH_SUCCEEDED':
-            return action.user;
+            return {
+                ...state,
+                account: action.user
+            };
+        case 'TOGGLE_SIGN_IN':
+            return {
+                ...state,
+                sideOpen: !state.sideOpen
+            };
         default:
             return state;
     }
