@@ -5,7 +5,7 @@ import '../style/DontForgetToAdd.css'
 
 const mapStateToProps = state => {
     return {
-        user : state.user
+        user : state.user.account
     }
 };
 
