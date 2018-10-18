@@ -4,10 +4,10 @@ import DontForgetTo from "./components/DontForgetTo";
 import DontForgetToSignIn from "./components/DontForgetToSignIn";
 import DontForgetToSignInSide from "./components/DontForgetToSignInSide";
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrash, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faEllipsisV, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
-library.add(faTrash,faCheckCircle,faEllipsisV);
+library.add(faTrash,faCheckCircle,faEllipsisV, faTimes);
 
 class App extends Component {
     render() {
