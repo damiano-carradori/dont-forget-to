@@ -66,6 +66,8 @@ const tasksReducer = ( state = [], action ) => {
                 return state;
             }
             return action.user.tasks.reduce((tasks, task) => [...tasks, task], []);
+        case 'USER_SIGN_OUT':
+            return [];
         default:
             return state
     }
@@ -90,6 +92,11 @@ const userReducer = ( state = { account: null, sideOpen: false }, action ) => {
             return {
                 ...state,
                 sideOpen: !state.sideOpen
+            };
+        case 'USER_SIGN_OUT':
+            return {
+                ...state,
+                account: null
             };
         default:
             return state;
