@@ -9,6 +9,14 @@ function* fetchUser(action) {
         yield put({type: "USER_FETCH_FAILED", message: e.message});
     }
 }
+function* logIn({username, password}) {
+    try {
+        const auth = yield call(GraphQL.logIn, username, password);
+        yield put({type: "USER_LOG_IN_SUCCEEDED", auth});
+    } catch (e) {
+        yield put({type: "USER_LOG_IN_FAILED", message: e.message});
+    }
+}
 function* addTask(action) {
     try {
         let response = yield call(GraphQL.addTask, action.user.id, action.text);
@@ -73,6 +81,7 @@ function* reorderTasks({user, source, destination}) {
 
 function* mySaga() {
 
+    yield takeEvery("USER_LOG_IN_REQUESTED", logIn);
     yield takeEvery("USER_FETCH_REQUESTED", fetchUser);
 
     yield takeEvery("ADD_TASK_REQUESTED", addTask);
