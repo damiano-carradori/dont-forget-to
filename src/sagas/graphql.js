@@ -2,7 +2,7 @@ import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
 
 const client = new ApolloClient({
-    uri: "https://apollo-graphql-yijiohtkcg.now.sh"
+    uri: "https://floating-reaches-16037.herokuapp.com/"
 });
 
 const GET_USER = gql`
