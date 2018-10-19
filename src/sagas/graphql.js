@@ -5,6 +5,24 @@ const client = new ApolloClient({
     uri: "https://floating-reaches-16037.herokuapp.com/"
 });
 
+const LOG_IN = gql`
+    mutation LogIn($username: String!, $password: String!) {
+        logIn(username: $username, password: $password) {
+            token
+            user{
+                id
+                username
+                profile_picture
+                tasks{
+                    id
+                    position
+                    text
+                    done
+                }
+            }
+        }
+    }
+`;
 const GET_USER = gql`
     query getUser($id: ID!){
         user(id: $id){
@@ -62,6 +80,13 @@ const MOVE_TASK = gql`
 `;
 
 const GraphQL = {
+    logIn: async (username, password) => {
+        let response = await client.mutate({
+            mutation: LOG_IN,
+            variables: {username, password}
+        });
+        return response.data.logIn;
+    },
     getUser: async id => {
         let response = await client.query({
             query: GET_USER,
