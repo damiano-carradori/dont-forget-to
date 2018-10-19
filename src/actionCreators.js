@@ -50,10 +50,11 @@ export function reorderTasks( source, destination, user ) {
         };
     }
 }
-export function signIn() {
+export function signIn(username, password) {
     return {
-        type: "USER_FETCH_REQUESTED",
-        id: "5bbe1f347b23411c77e0b544"
+        type: "USER_LOG_IN_REQUESTED",
+        username,
+        password
     }
 }
 export function signOut() {
