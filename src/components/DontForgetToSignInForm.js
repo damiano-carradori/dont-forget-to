@@ -27,7 +27,8 @@ class DontForgetToSignInForm extends Component {
 
     handleSubmit(event) {
         let {dispatch} = this.props;
-        dispatch(signIn());
+        let {username, password} = this.state;
+        dispatch(signIn(username, password));
         dispatch(toggleSignIn());
         event.preventDefault();
     }
