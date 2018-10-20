@@ -13,40 +13,40 @@ export function setFilter(filter) {
         filter
     };
 }
-export function toggleTask(user, id, done) {
-    let type = (user === null) ? "TOGGLE_TASK" : "TOGGLE_TASK_REQUESTED";
+export function toggleTask(token, id, done) {
+    let type = (token === null) ? "TOGGLE_TASK" : "TOGGLE_TASK_REQUESTED";
     return {
         type,
-        user,
+        token,
         id,
         done
     };
 }
-export function editTask(user, id, text) {
-    let type = (user === null) ? "EDIT_TASK" : "EDIT_TASK_REQUESTED";
+export function editTask(token, id, text) {
+    let type = (token === null) ? "EDIT_TASK" : "EDIT_TASK_REQUESTED";
     return {
         type,
-        user,
+        token,
         id,
         text
     };
 }
-export function deleteTask(user, id) {
-    let type = (user === null) ? "DELETE_TASK" : "DELETE_TASK_REQUESTED";
+export function deleteTask(token, id) {
+    let type = (token === null) ? "DELETE_TASK" : "DELETE_TASK_REQUESTED";
     return {
         type,
-        user,
+        token,
         id
     };
 }
-export function reorderTasks( source, destination, user ) {
+export function reorderTasks( source, destination, token ) {
     if( destination ) {
-        let type = (user === null) ? "REORDER_TASKS" : "REORDER_TASKS_REQUESTED";
+        let type = (token === null) ? "REORDER_TASKS" : "REORDER_TASKS_REQUESTED";
         return {
             type,
             source,
             destination,
-            user
+            token
         };
     }
 }
