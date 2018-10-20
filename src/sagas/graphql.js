@@ -96,7 +96,7 @@ const GraphQL = {
                 }
             }
         });
-        return response.data.user;
+        return response.data.me;
     },
     addTask: async (user, text) => {
         let response = await client.mutate({
