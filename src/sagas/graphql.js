@@ -24,8 +24,8 @@ const LOG_IN = gql`
     }
 `;
 const GET_USER = gql`
-    query getUser($id: ID!){
-        user(id: $id){
+    {
+        me{
             id
             username
             profile_picture
@@ -87,10 +87,14 @@ const GraphQL = {
         });
         return response.data.logIn;
     },
-    getUser: async id => {
+    getUser: async token => {
         let response = await client.query({
             query: GET_USER,
-            variables: {id}
+            context:{
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
         });
         return response.data.user;
     },
