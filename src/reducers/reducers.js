@@ -81,8 +81,15 @@ const filterReducer = ( state = 'SHOW_ACTIVE', action ) => {
     }
 };
 
-const userReducer = ( state = { account: null, sideOpen: false }, action ) => {
+const userReducer = ( state = { token: null, account: null, sideOpen: false }, action ) => {
     switch (action.type) {
+        case 'USER_LOG_IN_SUCCEEDED':
+            let { token, user } = action.auth;
+            return {
+                ...state,
+                token,
+                account: user
+            };
         case 'USER_FETCH_SUCCEEDED':
             return {
                 ...state,
