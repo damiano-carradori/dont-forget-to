@@ -1,10 +1,10 @@
-export function addTask(text, user) {
-    let type = (user === null) ? "ADD_TASK" : "ADD_TASK_REQUESTED";
+export function addTask(token, text) {
+    let type = (token === null) ? "ADD_TASK" : "ADD_TASK_REQUESTED";
     return {
         type,
-        user,
+        token,
         text,
-        ...(!user && {id: +Date.now()})
+        ...(!token && {id: +Date.now()})
     };
 }
 export function setFilter(filter) {
