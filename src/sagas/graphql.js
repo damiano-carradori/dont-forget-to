@@ -39,8 +39,8 @@ const GET_USER = gql`
     }
 `;
 const ADD_TASK = gql`
-    mutation AddTask($user: ID!, $text: String!) {
-        addTask(user: $user, text: $text) {
+    mutation AddTask($text: String!) {
+        addTask(text: $text) {
             id
             position
             text
@@ -98,19 +98,16 @@ const GraphQL = {
         });
         return response.data.me;
     },
-    addTask: async (user, text) => {
+    addTask: async (token, text) => {
         let response = await client.mutate({
             mutation: ADD_TASK,
-            variables: {user, text}
+            variables: {text},
+            context:{
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
         });
-        // response:
-        // {
-        //     data: {
-        //         addTask {
-        //
-        //         }
-        //     }
-        // }
         return response.data.addTask;
     },
     deleteTask: async id => {
