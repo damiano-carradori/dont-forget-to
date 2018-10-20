@@ -5,18 +5,18 @@ import '../style/DontForgetToAdd.css'
 
 const mapStateToProps = state => {
     return {
-        user : state.user.account
+        token : state.user.token
     }
 };
 
-const DontForgetToAdd = ({ user, dispatch }) => {
+const DontForgetToAdd = ({ token, dispatch }) => {
     const onEnter = e => {
         if (e.key === 'Enter') {
             e.stopPropagation();
             e.preventDefault();
             let text = e.target.value.trim();
             if (text) {
-                dispatch(addTask(text, user));
+                dispatch(addTask(token, text));
             }
             e.target.value = ''
         }
