@@ -8,25 +8,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const mapStateToProps = state => {
     return {
-        user: state.user.account,
+        token: state.user.token,
         filter: state.filter
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onToggle: (user, id, done) => {
-            dispatch(toggleTask(user, id, done))
+        onToggle: (token, id, done) => {
+            dispatch(toggleTask(token, id, done))
         },
-        onDeleteClick: (user, id) => {
-            dispatch(deleteTask(user, id))
+        onDeleteClick: (token, id) => {
+            dispatch(deleteTask(token, id))
         },
-        onEdit: (user, id, text) => {
-            dispatch(editTask(user, id, text))
+        onEdit: (token, id, text) => {
+            dispatch(editTask(token, id, text))
         }
     }
 };
-const DontForgetToItem = ({user, filter, id, position, text, done, onToggle, onDeleteClick, onEdit}) => {
+const DontForgetToItem = ({token, filter, id, position, text, done, onToggle, onDeleteClick, onEdit}) => {
     const WAIT_INTERVAL = 1000;
     let timer = null;
 
@@ -34,7 +34,7 @@ const DontForgetToItem = ({user, filter, id, position, text, done, onToggle, onD
         let text = e.target.value;
         clearTimeout(timer);
         timer = setTimeout(() => {
-            onEdit(user, id, text);
+            onEdit(token, id, text);
         }, WAIT_INTERVAL);
     };
 
@@ -66,10 +66,10 @@ const DontForgetToItem = ({user, filter, id, position, text, done, onToggle, onD
                         <FontAwesomeIcon icon="ellipsis-v"/>
                     </div>
                     <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']}
-                                     onClick={() => onToggle(user, id, !done)}/>
+                                     onClick={() => onToggle(token, id, !done)}/>
                     <input defaultValue={text} type="text" disabled={done} onKeyUp={inputChange}/>
                     <FontAwesomeIcon className="delete-task" icon="trash"
-                                     onClick={() => onDeleteClick(user, id)}/>
+                                     onClick={() => onDeleteClick(token, id)}/>
                 </div>
             )}
         </Draggable>
