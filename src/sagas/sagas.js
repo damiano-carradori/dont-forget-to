@@ -1,10 +1,10 @@
 import { fork, call, put, takeEvery } from 'redux-saga/effects'
 import GraphQL from './graphql'
 
-function* fetchUser(action) {
+function* fetchUser({token}) {
     try {
-        const user = yield call(GraphQL.getUser, action.id);
-        yield put({type: "USER_FETCH_SUCCEEDED", user });
+        const user = yield call(GraphQL.getUser, token);
+        yield put({type: "USER_FETCH_SUCCEEDED", user});
     } catch (e) {
         yield put({type: "USER_FETCH_FAILED", message: e.message});
     }
