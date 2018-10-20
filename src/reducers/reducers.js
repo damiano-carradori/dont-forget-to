@@ -61,6 +61,11 @@ const tasksReducer = ( state = [], action ) => {
                 ...task,
                 ...(task.map !== index && {position: index})
             }));
+        case 'USER_LOG_IN_SUCCEEDED':
+            if (!action.auth.user.tasks.length) {
+                return state;
+            }
+            return action.auth.user.tasks.reduce((tasks, task) => [...tasks, task], []);
         case 'USER_FETCH_SUCCEEDED':
             if (!action.user.tasks.length) {
                 return state;
