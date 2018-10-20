@@ -28,10 +28,10 @@ function* addTask({token, text}) {
         yield put({type: "ADD_TASK_FAILED", message: e.message});
     }
 }
-function* deleteTask(action) {
+function* deleteTask({token, id}) {
     // TODO: check user id before perform the deletion
     try{
-        let response = yield call(GraphQL.deleteTask, action.id);
+        let response = yield call(GraphQL.deleteTask, token, id);
         console.log(response);
         yield put({
             type: "DELETE_TASK",
@@ -41,10 +41,10 @@ function* deleteTask(action) {
         yield put({type: "DELETE_TASK_FAILED", message: e.message});
     }
 }
-function* editTask({id, text}) {
+function* editTask({token, id, text}) {
     // TODO: check user id before perform the edit
     try {
-        let response = yield call(GraphQL.updateTask, id, {text});
+        let response = yield call(GraphQL.updateTask, token, id, {text});
         yield put({
             type: "EDIT_TASK",
             ...response
@@ -53,10 +53,10 @@ function* editTask({id, text}) {
         yield put({type: "EDIT_TASK_FAILED", message: e.message});
     }
 }
-function* toggleTask({id, done}) {
+function* toggleTask({token, id, done}) {
     // TODO: check user id before perform the edit
     try {
-        let response = yield call(GraphQL.updateTask, id, {done});
+        let response = yield call(GraphQL.updateTask, token, id, {done});
         yield put({
             type: "TOGGLE_TASK",
             ...response
@@ -65,10 +65,10 @@ function* toggleTask({id, done}) {
         yield put({type: "TOGGLE_TASK_FAILED", message: e.message});
     }
 }
-function* reorderTasks({user, source, destination}) {
+function* reorderTasks({token, source, destination}) {
     // TODO: check user id before perform the edit
     try {
-        yield fork(GraphQL.moveTask, user.id, source.index, destination.index);
+        yield fork(GraphQL.moveTask, token, source.index, destination.index);
         yield put({
             type: "REORDER_TASKS",
             source,
