@@ -110,28 +110,43 @@ const GraphQL = {
         });
         return response.data.addTask;
     },
-    deleteTask: async id => {
+    deleteTask: async (token, id) => {
         let response = await client.mutate({
             mutation: DELETE_TASK,
-            variables: {id}
+            variables: {id},
+            context:{
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
         });
         return response.data.deleteTask;
     },
-    updateTask: async (id, {text, done}) => {
+    updateTask: async (token, id, {text, done}) => {
         let response = await client.mutate({
             mutation: UPDATE_TASK,
             variables: {
                 id,
                 ...(text !== undefined && {text}),
                 ...(done !== undefined && {done})
+            },
+            context:{
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
             }
         });
         return response.data.updateTask;
     },
-    moveTask: async (user, from, to) => {
+    moveTask: async (token, from, to) => {
         let response = await client.mutate({
             mutation: MOVE_TASK,
-            variables: {user, from, to}
+            variables: {from, to},
+            context:{
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
         });
         return response.data.moveTask;
     }
