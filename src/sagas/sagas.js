@@ -17,9 +17,9 @@ function* logIn({username, password}) {
         yield put({type: "USER_LOG_IN_FAILED", message: e.message});
     }
 }
-function* addTask(action) {
+function* addTask({token, text}) {
     try {
-        let response = yield call(GraphQL.addTask, action.user.id, action.text);
+        let response = yield call(GraphQL.addTask, token, text);
         yield put({
             type: "ADD_TASK",
             ...response
