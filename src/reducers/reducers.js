@@ -108,7 +108,8 @@ const userReducer = ( state = { token: null, account: null, sideOpen: false }, a
         case 'USER_SIGN_OUT':
             return {
                 ...state,
-                account: null
+                token: null,
+                account: null,
             };
         default:
             return state;
