@@ -8,7 +8,7 @@ import DontForgetToSignInForm from "./DontForgetToSignInForm";
 
 const mapStateToProps = state => {
     return {
-        user: state.user.account,
+        token: state.user.token,
         open : state.user.sideOpen
     }
 };
@@ -24,14 +24,17 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-const DontForgetToSignInSide = ({ open, user, onCloseSide, onSignOut }) => {
+const DontForgetToSignInSide = ({ open, token, onCloseSide, onSignOut }) => {
     return (
         <div className={cx(
             "dont-forget-to-sign-in-side",
             {open}
         )}>
             <FontAwesomeIcon className="close-side" icon="times" onClick={onCloseSide}/>
-            {user===null?(<DontForgetToSignInForm/>):(<button onClick={onSignOut}>Sign out</button>)}
+            {token===null?
+                <DontForgetToSignInForm/>:
+                <button onClick={onSignOut}>Sign out</button>
+            }
         </div>
     )
 };
