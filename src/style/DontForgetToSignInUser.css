@@ -1,0 +1,36 @@
+.dont-forget-to-sign-in-user{
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dont-forget-to-sign-in-user > img {
+    border-radius: 50%;
+}
+
+.dont-forget-to-sign-in-user > .user-name {
+    margin: 8px 0 16px;
+}
+
+
+.dont-forget-to-sign-in-user > button {
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: 1px solid #607d8b;
+    padding: 8px;
+    cursor: pointer;
+    margin: 8px 0;
+    border-radius: 3px;
+    background-color: #607d8b;
+    color: #fafafa;
+    transition: all ease-in-out 200ms;
+}
+
+.dont-forget-to-sign-in-user > button:hover {
+    color: #607d8b;
+    background-color: transparent;
+}
