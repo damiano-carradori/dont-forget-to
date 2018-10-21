@@ -69,8 +69,8 @@ const UPDATE_TASK = gql`
     }
 `;
 const MOVE_TASK = gql`
-    mutation MoveTask($user: String!, $from: Int!, $to: Int!) {
-        moveTask(user: $user, from: $from, to: $to) {
+    mutation MoveTask($from: Int!, $to: Int!) {
+        moveTask(from: $from, to: $to) {
             id
             position
             text
