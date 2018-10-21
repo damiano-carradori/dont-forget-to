@@ -5,6 +5,7 @@ import '../style/DontForgetToSignInSide.css'
 import cx from "classnames"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DontForgetToSignInForm from "./DontForgetToSignInForm";
+import DontForgetToSignInUser from "./DontForgetToSignInUser";
 
 const mapStateToProps = state => {
     return {
@@ -33,7 +34,7 @@ const DontForgetToSignInSide = ({ open, token, onCloseSide, onSignOut }) => {
             <FontAwesomeIcon className="close-side" icon="times" onClick={onCloseSide}/>
             {token===null?
                 <DontForgetToSignInForm/>:
-                <button onClick={onSignOut}>Sign out</button>
+                <DontForgetToSignInUser/>
             }
         </div>
     )
