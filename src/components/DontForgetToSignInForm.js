@@ -56,18 +56,21 @@ class DontForgetToSignInForm extends Component {
         return (
             <Mutation
                 mutation={LOG_IN}
+                ignoreResults={true}
                 onCompleted={(data)=> {
                     let {dispatch} = this.props;
                     let auth = data.logIn;
                     dispatch(toggleSignIn());
                     dispatch({type: "USER_LOG_IN_SUCCEEDED", auth});
-                }}>
+                }}
+                onError={()=>false}>
                 {(signIn, { loading, error }) => (
                     <form className="dont-forget-to-sign-in-form" onSubmit={(e)=>this.handleSubmit(e,signIn)}>
                         <input className={error && "error"} id="username" type="text" name="username" placeholder="Username" autoComplete="username" onChange={this.handleInputChange}/>
                         <input className={error && "error"} id="password" type="password" name="password" placeholder="Password" autoComplete="current-password" onChange={this.handleInputChange}/>
                         {error && <div className="error-message">{error.message}</div>}
-                        {loading && <div className="loading-button">Loading...</div> || <button type="submit">Sign in</button>}
+                        {loading && <div className="loading-button">Loading...</div>}
+                        {!loading && <button type="submit">Sign in</button>}
                     </form>
                 )}
             </Mutation>
