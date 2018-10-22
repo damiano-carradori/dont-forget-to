@@ -18,14 +18,11 @@ const mapDispatchToProps = dispatch => {
     return {
         onCloseSide: () => {
             dispatch(toggleSignIn())
-        },
-        onSignOut: () => {
-            dispatch(signOut())
         }
     }
 };
 
-const DontForgetToSignInSide = ({ open, token, onCloseSide, onSignOut }) => {
+const DontForgetToSignInSide = ({ open, token, onCloseSide }) => {
     return (
         <div className={cx(
             "dont-forget-to-sign-in-side",
