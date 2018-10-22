@@ -4,11 +4,6 @@ import {signOut} from "../actionCreators"
 import '../style/DontForgetToSignInUser.css'
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
-import ApolloClient from "apollo-boost";
-
-const client = new ApolloClient({
-    uri: "https://floating-reaches-16037.herokuapp.com/"
-});
 
 const GET_ME = gql`
     {
@@ -30,15 +25,13 @@ const DontForgetToSignInUser = ({ token, dispatch }) => {
     return (
         <Query
             query={GET_ME}
-            client={client}
+            onError={()=>false}
             context={{
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             }}>
             {({loading, error, data}) => {
-                if (loading) return "Loading...";
-                if (error) return `Error: ${error.message}`;
                 let {me} = data;
                 return (
                     <div className="dont-forget-to-sign-in-user">
