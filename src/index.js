@@ -1,127 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import { createStore, combineReducers } from 'redux';
-import _ from 'lodash';
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga'
+
+import reducer from './reducers/reducers';
+import mySaga from './sagas/sagas';
+
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import ApolloClient from "apollo-boost";
-import gql from "graphql-tag";
-import { ApolloProvider } from "react-apollo";
 
-const client = new ApolloClient({
-    uri: "https://graph-ql-fargdjqiqg.now.sh"
-});
+const sagaMiddleware = createSagaMiddleware();
 
-const taskReducer = ( state, action ) => {
-    switch (action.type) {
-        case 'ADD_TASK':
-            return {
-                id : action.id,
-                text : action.text,
-                done : false
-            };
-        case 'TOGGLE_TASK':
-            if( state.id !== action.id ){
-                return state;
-            }
-            return {
-                ...state,
-                done : !state.done
-            };
-        case 'EDIT_TASK':
-            if( state.id !== action.id ){
-                return state;
-            }
-            return {
-                ...state,
-                text : action.text
-            };
-        default:
-            return state;
-    }
-};
+const logger = store => next => action => {
+    console.log('dispatching', action)
+    let result = next(action)
+    console.log('next state', store.getState())
+    return result
+}
 
-const tasksReducer = ( state = [], action ) => {
-    switch (action.type) {
-        case 'ADD_TASK':
-            return [ taskReducer(undefined,action), ...state ];
-        case 'TOGGLE_TASK':
-        case 'EDIT_TASK':
-            return state.map( task =>
-               taskReducer(task,action)
-            );
-        case 'DELETE_TASK':
-            return _.filter(state, task => task.id !== action.id );
-        case 'REORDER_TASKS':
-            const convertPositions = ( position, filter ) =>{
-                switch (filter) {
-                    case 'SHOW_ACTIVE':
-                        let activeTasks = _.filter(state, task => !task.done );
-                        return _.findIndex(state, task => activeTasks[position].id === task.id );
-                    case 'SHOW_COMPLETED':
-                        let completedTasks = _.filter(state, task => task.done );
-                        return _.findIndex(state, task => completedTasks[position].id === task.id );
-                    default:
-                        return position;
-                }
-            };
-            if( !action.destination ){
-                return state;
-            }
-            let from = convertPositions(action.source.index, action.filter);
-            let to = convertPositions(action.destination.index, action.filter);
-            let editableState = Array.from(state);
-            let movingTask = editableState.splice(from, 1);
-            editableState.splice(to, 0, ...movingTask );
-            return editableState;
-        default:
-            return state
-    }
-};
-const filterReducer = ( state = 'SHOW_ACTIVE', action ) => {
-    switch (action.type) {
-        case 'SET_FILTER':
-            return action.filter;
-        default:
-            return state;
-    }
-};
-const reducer = combineReducers({
-    tasks : tasksReducer,
-    filter : filterReducer
-});
-
-let savedTasks = [];
-client.query({
-    query: gql`
-    {
-        tasks {
-            _id
-            text
-            done
-        }
-    }
-    `
-}).then(
-    response => {
-        savedTasks = response.data.tasks.map( task => ({ ...task, id: task._id }) );
-    }
-).catch(
-    err => console.log(err)
-).finally(
-    () => {
-        const store = createStore(
-            reducer,
-            {
-                tasks : savedTasks
-            },
-            window.__REDUX_DEVTOOLS_EXTENSION__ &&
-            window.__REDUX_DEVTOOLS_EXTENSION__()
-        );
-
-        ReactDOM.render(<Provider store={store}><ApolloProvider client={client}><App /></ApolloProvider></Provider>, document.getElementById('root'));
-        registerServiceWorker();
-    }
+const store = createStore(
+    reducer,
+    applyMiddleware(logger, sagaMiddleware)
 );
+
+sagaMiddleware.run(mySaga);
+
+ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+registerServiceWorker();
