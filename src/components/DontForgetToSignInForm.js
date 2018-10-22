@@ -36,8 +36,10 @@ class DontForgetToSignInForm extends Component {
     render() {
         return (
             <form className="dont-forget-to-sign-in-form" onSubmit={this.handleSubmit}>
-                <input type="text" name="username" placeholder="Username" autoComplete="username" onChange={this.handleInputChange}/>
-                <input type="password" name="password" placeholder="Password" autoComplete="current-password" onChange={this.handleInputChange}/>
+                <input id="username" type="text" name="username" placeholder="Username" autoComplete="username" onChange={this.handleInputChange}/>
+                <label htmlFor="username">Test: Admin</label>
+                <input id="password" type="password" name="password" placeholder="Password" autoComplete="current-password" onChange={this.handleInputChange}/>
+                <label htmlFor="password">Test: 1234</label>
                 <button type="submit">Sign in</button>
             </form>
         );

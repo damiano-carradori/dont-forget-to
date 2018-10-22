@@ -37,3 +37,9 @@
     color: #607d8b;
     background-color: transparent;
 }
+.dont-forget-to-sign-in-form > label{
+    font-size: .75em;
+    font-family: sans-serif;
+    color: rgba(0,0,0,.6);
+    margin: -2px 16px 4px;
+}
