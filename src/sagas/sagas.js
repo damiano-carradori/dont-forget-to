@@ -29,7 +29,6 @@ function* addTask({token, text}) {
     }
 }
 function* deleteTask({token, id}) {
-    // TODO: check user id before perform the deletion
     try{
         let response = yield call(GraphQL.deleteTask, token, id);
         console.log(response);
@@ -42,7 +41,6 @@ function* deleteTask({token, id}) {
     }
 }
 function* editTask({token, id, text}) {
-    // TODO: check user id before perform the edit
     try {
         let response = yield call(GraphQL.updateTask, token, id, {text});
         yield put({
@@ -54,7 +52,6 @@ function* editTask({token, id, text}) {
     }
 }
 function* toggleTask({token, id, done}) {
-    // TODO: check user id before perform the edit
     try {
         let response = yield call(GraphQL.updateTask, token, id, {done});
         yield put({
@@ -66,7 +63,6 @@ function* toggleTask({token, id, done}) {
     }
 }
 function* reorderTasks({token, source, destination}) {
-    // TODO: check user id before perform the edit
     try {
         yield fork(GraphQL.moveTask, token, source.index, destination.index);
         yield put({
