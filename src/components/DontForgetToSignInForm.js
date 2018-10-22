@@ -56,7 +56,6 @@ class DontForgetToSignInForm extends Component {
         return (
             <Mutation
                 mutation={LOG_IN}
-                ignoreResults={true}
                 onCompleted={(data)=> {
                     let {dispatch} = this.props;
                     let auth = data.logIn;
