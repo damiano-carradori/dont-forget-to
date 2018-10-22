@@ -16,6 +16,17 @@
     outline: none;
     transition: all ease-in-out 100ms;
 }
+.dont-forget-to-sign-in-form > input:focus{
+    box-shadow: 0 0 0 2px #c6d5d8, 0 0 3px 3px #00BCD4;
+}
+.dont-forget-to-sign-in-form > input.error{
+    box-shadow: 0 0 0 2px #c6d5d8, 0 0 3px 3px #f44336;
+}
+.error-message{
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    color: #f44336;
+}
 
 .dont-forget-to-sign-in-form > button {
     outline: none;
