@@ -1,11 +1,7 @@
 import React  from 'react'
 import { connect } from 'react-redux'
-import {toggleSignIn, signOut} from "../actionCreators"
+import {signOut} from "../actionCreators"
 import '../style/DontForgetToSignInUser.css'
-import cx from "classnames"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import DontForgetToSignInForm from "./DontForgetToSignInForm";
-import userImage from "../images/user.png";
 
 const mapStateToProps = state => {
     return {
@@ -25,7 +21,6 @@ const mapDispatchToProps = dispatch => {
 const DontForgetToSignInUser = ({ token, user, onSignOut }) => {
     return (
         <div className="dont-forget-to-sign-in-user">
-
             <img
                 src={user===null?'':user.profile_picture}
                 alt="User profile pic"/>
