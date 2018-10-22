@@ -1,6 +1,6 @@
 import React  from 'react'
 import { connect } from 'react-redux'
-import {toggleSignIn, signOut} from "../actionCreators"
+import {toggleSignIn} from "../actionCreators"
 import '../style/DontForgetToSignInSide.css'
 import cx from "classnames"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
