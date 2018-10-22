@@ -28,11 +28,12 @@
     color: #f44336;
 }
 
-.dont-forget-to-sign-in-form > button {
+.dont-forget-to-sign-in-form > button, .loading-button {
     outline: none;
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
     font-weight: 600;
+    text-align: center;
     text-transform: uppercase;
     border: 1px solid #607d8b;
     padding: 8px;
