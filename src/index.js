@@ -7,9 +7,16 @@ import createSagaMiddleware from 'redux-saga'
 import reducer from './reducers/reducers';
 import mySaga from './sagas/sagas';
 
+import { ApolloProvider } from "react-apollo";
+
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import ApolloClient from "apollo-boost";
+
+const client = new ApolloClient({
+    uri: "https://floating-reaches-16037.herokuapp.com/"
+});
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -27,5 +34,5 @@ const store = createStore(
 
 sagaMiddleware.run(mySaga);
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+ReactDOM.render(<Provider store={store}><ApolloProvider client={client}><App /></ApolloProvider></Provider>, document.getElementById('root'));
 registerServiceWorker();
