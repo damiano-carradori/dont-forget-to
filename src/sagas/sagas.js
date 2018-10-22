@@ -12,6 +12,7 @@ function* fetchUser({token}) {
 function* logIn({username, password}) {
     try {
         const auth = yield call(GraphQL.logIn, username, password);
+        yield put({type: "TOGGLE_SIGN_IN"});
         yield put({type: "USER_LOG_IN_SUCCEEDED", auth});
     } catch (e) {
         yield put({type: "USER_LOG_IN_FAILED", message: e.message});
