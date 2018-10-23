@@ -32,13 +32,12 @@ const DontForgetToSignInUser = ({ token, dispatch }) => {
                 }
             }}>
             {({loading, error, data}) => {
-                let {me} = data;
                 return (
                     <div className="dont-forget-to-sign-in-user">
                         <img
-                            src={me.profile_picture}
+                            src={loading?'':data.me.profile_picture}
                             alt="User profile pic"/>
-                        <div className="user-name">{me.username}</div>
+                        <div className="user-name">{loading?'':data.me.username}</div>
                         <button onClick={() => dispatch(signOut())}>Sign Out</button>
                     </div>
                 );
