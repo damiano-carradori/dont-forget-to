@@ -5,6 +5,7 @@ import { deleteTask, toggleTask, editTask } from "../actionCreators";
 import { Draggable } from "react-beautiful-dnd"
 import '../style/DontForgetToItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import DontForgetToItemToggle from "./DontForgetToItemToggle";
 
 const mapStateToProps = state => {
     return {
@@ -65,8 +66,10 @@ const DontForgetToItem = ({token, filter, id, position, text, done, onToggle, on
                     <div {...provided.dragHandleProps} className="drag-task">
                         <FontAwesomeIcon icon="ellipsis-v"/>
                     </div>
-                    <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']}
-                                     onClick={() => onToggle(token, id, !done)}/>
+                    <DontForgetToItemToggle
+                        id={id}
+                        done={done}
+                    />
                     <input defaultValue={text} type="text" disabled={done} onKeyUp={inputChange}/>
                     <FontAwesomeIcon className="delete-task" icon="trash"
                                      onClick={() => onDeleteClick(token, id)}/>
