@@ -1,12 +1,12 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import cx from 'classnames'
-import { Draggable } from "react-beautiful-dnd"
-import '../style/DontForgetToItem.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from "react"
+import {connect} from "react-redux"
+import cx from "classnames"
+import {Draggable} from "react-beautiful-dnd"
 import DontForgetToItemToggle from "./DontForgetToItemToggle";
 import DontForgetToItemText from "./DontForgetToItemText";
 import DontForgetToItemDelete from "./DontForgetToItemDelete";
+import DontForgetToItemDragHandler from "./DontForgetToItemDragHandler";
+import '../style/DontForgetToItem.css'
 
 const mapStateToProps = state => {
     return {
@@ -39,21 +39,10 @@ const DontForgetToItem = ({filter, id, position, text, done}) => {
                         {hidden: !visible(filter, done)},
                         {done}
                     )}>
-                    <div {...provided.dragHandleProps} className="drag-task">
-                        <FontAwesomeIcon icon="ellipsis-v"/>
-                    </div>
-                    <DontForgetToItemToggle
-                        id={id}
-                        done={done}
-                    />
-                    <DontForgetToItemText
-                        id={id}
-                        text={text}
-                        done={done}
-                    />
-                    <DontForgetToItemDelete
-                        id={id}
-                    />
+                    <DontForgetToItemDragHandler {...provided.dragHandleProps} />
+                    <DontForgetToItemToggle id={id} done={done} />
+                    <DontForgetToItemText id={id} text={text} done={done} />
+                    <DontForgetToItemDelete id={id} />
                 </div>
             )}
         </Draggable>
