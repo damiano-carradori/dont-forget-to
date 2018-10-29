@@ -1,45 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import cx from 'classnames'
-import { deleteTask, toggleTask, editTask } from "../actionCreators";
 import { Draggable } from "react-beautiful-dnd"
 import '../style/DontForgetToItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DontForgetToItemToggle from "./DontForgetToItemToggle";
 import DontForgetToItemText from "./DontForgetToItemText";
+import DontForgetToItemDelete from "./DontForgetToItemDelete";
 
 const mapStateToProps = state => {
     return {
-        token: state.user.token,
         filter: state.filter
     }
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onToggle: (token, id, done) => {
-            dispatch(toggleTask(token, id, done))
-        },
-        onDeleteClick: (token, id) => {
-            dispatch(deleteTask(token, id))
-        },
-        onEdit: (token, id, text) => {
-            dispatch(editTask(token, id, text))
-        }
-    }
-};
-const DontForgetToItem = ({token, filter, id, position, text, done, onToggle, onDeleteClick, onEdit}) => {
-    const WAIT_INTERVAL = 1000;
-    let timer = null;
-
-    const inputChange = e => {
-        let text = e.target.value;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            onEdit(token, id, text);
-        }, WAIT_INTERVAL);
-    };
-
+const DontForgetToItem = ({filter, id, position, text, done}) => {
     const visible = (filter, done) => {
         switch (filter) {
             case 'SHOW_ALL':
@@ -76,12 +51,13 @@ const DontForgetToItem = ({token, filter, id, position, text, done, onToggle, on
                         text={text}
                         done={done}
                     />
-                    <FontAwesomeIcon className="delete-task" icon="trash"
-                                     onClick={() => onDeleteClick(token, id)}/>
+                    <DontForgetToItemDelete
+                        id={id}
+                    />
                 </div>
             )}
         </Draggable>
     )
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(DontForgetToItem)
+export default connect(mapStateToProps)(DontForgetToItem)
