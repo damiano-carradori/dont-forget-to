@@ -6,6 +6,7 @@ import { Draggable } from "react-beautiful-dnd"
 import '../style/DontForgetToItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DontForgetToItemToggle from "./DontForgetToItemToggle";
+import DontForgetToItemText from "./DontForgetToItemText";
 
 const mapStateToProps = state => {
     return {
@@ -70,7 +71,11 @@ const DontForgetToItem = ({token, filter, id, position, text, done, onToggle, on
                         id={id}
                         done={done}
                     />
-                    <input defaultValue={text} type="text" disabled={done} onKeyUp={inputChange}/>
+                    <DontForgetToItemText
+                        id={id}
+                        text={text}
+                        done={done}
+                    />
                     <FontAwesomeIcon className="delete-task" icon="trash"
                                      onClick={() => onDeleteClick(token, id)}/>
                 </div>
