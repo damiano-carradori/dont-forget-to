@@ -1,40 +1,36 @@
-import React  from 'react'
-import { connect } from 'react-redux'
-import {toggleSignIn} from "../actionCreators"
-import '../style/DontForgetToSignInSide.css'
+import React  from "react"
+import {Query} from "react-apollo";
 import cx from "classnames"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import gql from "graphql-tag";
 import DontForgetToSignInForm from "./DontForgetToSignInForm";
 import DontForgetToSignInUser from "./DontForgetToSignInUser";
+import "../style/DontForgetToSignInSide.css"
 
-const mapStateToProps = state => {
-    return {
-        token: state.user.token,
-        open : state.user.sideOpen
+const GET_SIDE_INFO = gql`
+    {
+        token @client
+        side @client
     }
-};
+`;
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onCloseSide: () => {
-            dispatch(toggleSignIn())
-        }
-    }
-};
-
-const DontForgetToSignInSide = ({ open, token, onCloseSide }) => {
+const DontForgetToSignInSide = (props) => {
     return (
-        <div className={cx(
-            "dont-forget-to-sign-in-side",
-            {open}
-        )}>
-            <FontAwesomeIcon className="close-side" icon="times" onClick={onCloseSide}/>
-            {token===null?
-                <DontForgetToSignInForm/>:
-                <DontForgetToSignInUser/>
-            }
-        </div>
+        <Query query={GET_SIDE_INFO}>
+            {({ data: { token, side } , client}) => (
+                <div className={cx(
+                    "dont-forget-to-sign-in-side",
+                    {open: side}
+                )}>
+                    <FontAwesomeIcon className="close-side" icon="times" onClick={() => client.writeData({ data: { side: false } })}/>
+                    {token===null?
+                        <DontForgetToSignInForm/>:
+                        <DontForgetToSignInUser/>
+                    }
+                </div>
+            )}
+        </Query>
     )
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(DontForgetToSignInSide);
+export default DontForgetToSignInSide;
