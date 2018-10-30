@@ -49,4 +49,4 @@ const DontForgetToItemDelete = ({id, dispatch}) => {
     );
 };
 
-export default connect(mapStateToProps)(DontForgetToItemDelete)
+export default connect()(DontForgetToItemDelete)

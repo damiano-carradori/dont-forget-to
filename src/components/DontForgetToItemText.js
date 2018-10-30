@@ -58,4 +58,4 @@ const DontForgetToItemText = ({id, text, done, dispatch}) => {
     );
 };
 
-export default connect(mapStateToProps)(DontForgetToItemText)
+export default connect()(DontForgetToItemText)
