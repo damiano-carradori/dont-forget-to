@@ -1,9 +1,7 @@
-import React, { Component }  from 'react'
-import { connect } from "react-redux"
+import React, {Component}  from "react"
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag";
-import {toggleSignIn} from "../actionCreators"
-import '../style/DontForgetToSignInForm.css'
+import "../style/DontForgetToSignInForm.css"
 
 const LOG_IN = gql`
     mutation LogIn($username: String!, $password: String!) {
@@ -56,11 +54,15 @@ class DontForgetToSignInForm extends Component {
         return (
             <Mutation
                 mutation={LOG_IN}
-                onCompleted={(data)=> {
-                    let {dispatch} = this.props;
-                    let auth = data.logIn;
-                    dispatch(toggleSignIn());
-                    dispatch({type: "USER_LOG_IN_SUCCEEDED", auth});
+                update={(cache, { data: { logIn } })=>{
+                    cache.writeData({
+                        data: {
+                            side: false,
+                            user: logIn.user,
+                            token: logIn.token,
+                            tasks: logIn.user.tasks
+                        }
+                    });
                 }}
                 onError={()=>false}>
                 {(signIn, { loading, error }) => (
@@ -77,4 +79,4 @@ class DontForgetToSignInForm extends Component {
     }
 }
 
-export default connect()(DontForgetToSignInForm);
+export default DontForgetToSignInForm;
