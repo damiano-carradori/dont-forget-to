@@ -15,7 +15,15 @@ import registerServiceWorker from './registerServiceWorker';
 import ApolloClient from "apollo-boost";
 
 const client = new ApolloClient({
-    uri: "https://floating-reaches-16037.herokuapp.com/"
+    uri: "https://floating-reaches-16037.herokuapp.com/",
+    clientState : {
+        defaults: {
+            user: {
+                token: null
+            },
+            filter : "SHOW_ACTIVE"
+        },
+    }
 });
 
 const sagaMiddleware = createSagaMiddleware();
