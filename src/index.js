@@ -14,15 +14,13 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import ApolloClient from "apollo-boost";
 
+import { defaults, typeDefs } from "./resolvers"
+
 const client = new ApolloClient({
     uri: "https://floating-reaches-16037.herokuapp.com/",
     clientState : {
-        defaults: {
-            user: null,
-            token: null,
-            side: false,
-            filter: "SHOW_ACTIVE"
-        }
+        defaults,
+        typeDefs
     }
 });
 
