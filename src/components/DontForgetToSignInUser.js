@@ -1,9 +1,7 @@
-import React  from 'react'
-import { connect } from 'react-redux'
-import {signOut} from "../actionCreators"
-import '../style/DontForgetToSignInUser.css'
+import React  from "react"
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
+import "../style/DontForgetToSignInUser.css"
 
 const GET_ME = gql`
     {
@@ -15,35 +13,39 @@ const GET_ME = gql`
     }
 `;
 
-const mapStateToProps = state => {
-    return {
-        token: state.user.token
+const GET_TOKEN = gql`
+    {
+        token @client
     }
-};
+`;
 
-const DontForgetToSignInUser = ({ token, dispatch }) => {
+const DontForgetToSignInUser = (props) => {
     return (
-        <Query
-            query={GET_ME}
-            onError={()=>false}
-            context={{
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }}>
-            {({loading, error, data}) => {
-                return (
-                    <div className="dont-forget-to-sign-in-user">
-                        <img
-                            src={loading?'':data.me.profile_picture}
-                            alt="User profile pic"/>
-                        <div className="user-name">{loading?'':data.me.username}</div>
-                        <button onClick={() => dispatch(signOut())}>Sign Out</button>
-                    </div>
-                );
-            }}
+        <Query query={GET_TOKEN}>
+            {({data: {token}}) => (
+                <Query
+                    query={GET_ME}
+                    onError={() => false}
+                    context={{
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }}>
+                    {({loading, error, data:{me}, client}) => {
+                        return (
+                            <div className="dont-forget-to-sign-in-user">
+                                <img
+                                    src={loading ? '' : me.profile_picture}
+                                    alt="User profile pic"/>
+                                <div className="user-name">{loading ? '' : me.username}</div>
+                                <button onClick={() => client.writeData({data:{token:null,user:null,tasks:[]}})}>Sign Out</button>
+                            </div>
+                        );
+                    }}
+                </Query>
+            )}
         </Query>
     )
 };
 
-export default connect(mapStateToProps)(DontForgetToSignInUser);
+export default DontForgetToSignInUser;
