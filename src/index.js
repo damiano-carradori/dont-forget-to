@@ -18,11 +18,11 @@ const client = new ApolloClient({
     uri: "https://floating-reaches-16037.herokuapp.com/",
     clientState : {
         defaults: {
-            user: {
-                token: null
-            },
-            filter : "SHOW_ACTIVE"
-        },
+            user: null,
+            token: null,
+            side: false,
+            filter: "SHOW_ACTIVE"
+        }
     }
 });
 
