@@ -1,20 +1,21 @@
 import React from "react"
-import {connect} from "react-redux"
-import cx from "classnames"
+import {Query} from "react-apollo";
 import {Draggable} from "react-beautiful-dnd"
+import cx from "classnames"
+import gql from "graphql-tag";
 import DontForgetToItemToggle from "./DontForgetToItemToggle";
 import DontForgetToItemText from "./DontForgetToItemText";
 import DontForgetToItemDelete from "./DontForgetToItemDelete";
 import DontForgetToItemDragHandler from "./DontForgetToItemDragHandler";
 import '../style/DontForgetToItem.css'
 
-const mapStateToProps = state => {
-    return {
-        filter: state.filter
+const GET_VISIBILITY_FILTER = gql`
+    {
+        filter @client
     }
-};
+`;
 
-const DontForgetToItem = ({filter, id, position, text, done}) => {
+const DontForgetToItem = ({id, position, text, done}) => {
     const visible = (filter, done) => {
         switch (filter) {
             case 'SHOW_ALL':
@@ -29,24 +30,28 @@ const DontForgetToItem = ({filter, id, position, text, done}) => {
     };
 
     return (
-        <Draggable draggableId={id} index={position}>
-            {provided => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    className={cx(
-                        'dont-forget-to-item',
-                        {hidden: !visible(filter, done)},
-                        {done}
-                    )}>
-                    <DontForgetToItemDragHandler {...provided.dragHandleProps} />
-                    <DontForgetToItemToggle id={id} done={done} />
-                    <DontForgetToItemText id={id} text={text} done={done} />
-                    <DontForgetToItemDelete id={id} />
-                </div>
+        <Query query={GET_VISIBILITY_FILTER}>
+            {({data: {filter}, client}) => (
+                <Draggable draggableId={id} index={position}>
+                    {provided => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            className={cx(
+                                'dont-forget-to-item',
+                                {hidden: !visible(filter, done)},
+                                {done}
+                            )}>
+                            <DontForgetToItemDragHandler {...provided.dragHandleProps} />
+                            <DontForgetToItemToggle id={id} done={done}/>
+                            <DontForgetToItemText id={id} text={text} done={done}/>
+                            <DontForgetToItemDelete id={id}/>
+                        </div>
+                    )}
+                </Draggable>
             )}
-        </Draggable>
+        </Query>
     )
 };
 
-export default connect(mapStateToProps)(DontForgetToItem)
+export default DontForgetToItem
