@@ -6,7 +6,10 @@ import "../style/DontForgetToSignIn.css"
 
 const GET_USER = gql`
     {
-        user @client
+        user @client{
+            username
+            profile_picture
+        }
     }
 `;
 
