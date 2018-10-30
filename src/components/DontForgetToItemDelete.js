@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Mutation} from "react-apollo";
+import {Mutation, Query} from "react-apollo";
 import gql from "graphql-tag";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {deleteTask} from "../actionCreators";
@@ -16,32 +16,36 @@ const DELETE_TASK = gql`
     }
 `;
 
-const mapStateToProps = state => {
-    return {
-        token: state.user.token
+const GET_TOKEN = gql`
+    {
+        token @client
     }
-};
+`;
 
-const DontForgetToItemDelete = ({id, token, dispatch}) => {
+const DontForgetToItemDelete = ({id, dispatch}) => {
 
     return (
-        <Mutation
-            mutation={DELETE_TASK}
-            onCompleted={(data)=>{
-                dispatch(deleteTask(null, id))
-            }}
-            context={{
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }}>
-            {(deleteTask, { loading, error }) => (
-                <FontAwesomeIcon
-                    icon="trash"
-                    className="delete-task"
-                    onClick={() => deleteTask({variables: {id}})}/>
+        <Query query={GET_TOKEN}>
+            {({data: {token}}) => (
+                <Mutation
+                    mutation={DELETE_TASK}
+                    onCompleted={(data) => {
+                        dispatch(deleteTask(null, id))
+                    }}
+                    context={{
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }}>
+                    {(deleteTask, {loading, error}) => (
+                        <FontAwesomeIcon
+                            icon="trash"
+                            className="delete-task"
+                            onClick={() => deleteTask({variables: {id}})}/>
+                    )}
+                </Mutation>
             )}
-        </Mutation>
+        </Query>
     );
 };
 

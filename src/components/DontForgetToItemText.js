@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Mutation} from "react-apollo";
+import {Mutation, Query} from "react-apollo";
 import gql from "graphql-tag";
 import {editTask} from "../actionCreators";
 
@@ -15,13 +15,13 @@ const UPDATE_TASK = gql`
     }
 `;
 
-const mapStateToProps = state => {
-    return {
-        token: state.user.token
+const GET_TOKEN = gql`
+    {
+        token @client
     }
-};
+`;
 
-const DontForgetToItemText = ({id, text, done, token, dispatch}) => {
+const DontForgetToItemText = ({id, text, done, dispatch}) => {
 
     const WAIT_INTERVAL = 1000;
     let timer = null;
@@ -35,21 +35,26 @@ const DontForgetToItemText = ({id, text, done, token, dispatch}) => {
     };
 
     return (
-        <Mutation
-            mutation={UPDATE_TASK}
-            onCompleted={(data) => {
-                let task = data.updateTask;
-                dispatch(editTask(null, id, task.text))
-            }}
-            context={{
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }}>
-            {(updateTask, {loading, error}) => (
-                <input defaultValue={text} type="text" disabled={done} onKeyUp={(e) => inputChange(e, updateTask)}/>
+        <Query query={GET_TOKEN}>
+            {({data: {token}}) => (
+                <Mutation
+                    mutation={UPDATE_TASK}
+                    onCompleted={(data) => {
+                        let task = data.updateTask;
+                        dispatch(editTask(null, id, task.text))
+                    }}
+                    context={{
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }}>
+                    {(updateTask, {loading, error}) => (
+                        <input defaultValue={text} type="text" disabled={done}
+                               onKeyUp={(e) => inputChange(e, updateTask)}/>
+                    )}
+                </Mutation>
             )}
-        </Mutation>
+        </Query>
     );
 };
 
