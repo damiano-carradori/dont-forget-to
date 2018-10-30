@@ -1,5 +1,5 @@
 import React  from "react"
-import { Query } from "react-apollo";
+import {Query} from "react-apollo";
 import cx from "classnames"
 import gql from "graphql-tag";
 
@@ -9,7 +9,7 @@ const GET_VISIBILITY_FILTER = gql`
     }
 `;
 
-let DontForgetToFilterButton = ({label, filter}) => {
+const DontForgetToFilterButton = ({label, filter}) => {
     return (
         <Query query={GET_VISIBILITY_FILTER}>
             {({ data, client }) => (
