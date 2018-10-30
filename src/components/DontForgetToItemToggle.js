@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Mutation} from "react-apollo";
+import {Mutation, Query} from "react-apollo";
 import gql from "graphql-tag";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {toggleTask} from "../actionCreators";
@@ -16,34 +16,38 @@ const UPDATE_TASK = gql`
     }
 `;
 
-const mapStateToProps = state => {
-    return {
-        token: state.user.token
+const GET_TOKEN = gql`
+    {
+        token @client
     }
-};
+`;
 
-const DontForgetToItemToggle = ({id, done, token, dispatch}) => {
+const DontForgetToItemToggle = ({id, done, dispatch}) => {
 
     return (
-        <Mutation
-            mutation={UPDATE_TASK}
-            onCompleted={(data)=>{
-                let task = data.updateTask;
-                dispatch(toggleTask(null, id, task.done))
-            }}
-            context={{
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }}>
-            {(updateTask, { loading, error }) => (
-                <FontAwesomeIcon
-                    icon={['far', 'check-circle']}
-                    className="toggle-task"
-                    onClick={() => updateTask({variables: {id, done:!done}})}/>
+        <Query query={GET_TOKEN}>
+            {({data: {token}}) => (
+                <Mutation
+                    mutation={UPDATE_TASK}
+                    onCompleted={(data) => {
+                        let task = data.updateTask;
+                        dispatch(toggleTask(null, id, task.done))
+                    }}
+                    context={{
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }}>
+                    {(updateTask, {loading, error}) => (
+                        <FontAwesomeIcon
+                            icon={['far', 'check-circle']}
+                            className="toggle-task"
+                            onClick={() => updateTask({variables: {id, done: !done}})}/>
+                    )}
+                </Mutation>
             )}
-        </Mutation>
+        </Query>
     );
 };
 
-export default connect(mapStateToProps)(DontForgetToItemToggle)
+export default connect()(DontForgetToItemToggle)
