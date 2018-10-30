@@ -1,24 +1,34 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import _ from 'lodash';
-import '../style/DontForgetToFooter.css'
+import React from "react"
+import {Query} from "react-apollo";
+import gql from "graphql-tag";
+import _ from "lodash";
+import "../style/DontForgetToFooter.css"
 
-const mapStateToProps = state => {
-    return {
-        total : _.size(_.filter(state.tasks, task => !task.done ))
+const GET_TASKS = gql`
+    {
+        tasks @client {
+            done
+        }
     }
-};
+`;
 
-let DontForgetToFooter = ({ total }) => {
+const DontForgetToFooter = (props) => {
     return (
-        <div className="dont-forget-to-footer">
-            {total ?
-                `${total} task${total > 1 ? 's' : ''} left` :
-                <span>Great, you have accomplished all your tasks!</span>
-            }
-        </div>
+        <Query query={GET_TASKS}>
+            {({data: {tasks}}) => {
+                let total = _.size(_.filter(tasks, task => !task.done));
+                return (
+                    <div className="dont-forget-to-footer">
+                        {total ?
+                            `${total} task${total > 1 ? 's' : ''} left` :
+                            <span>Great, you have accomplished all your tasks!</span>
+                        }
+                    </div>
+                )
+            }}
+        </Query>
     )
 };
 
-export default connect(mapStateToProps)(DontForgetToFooter)
+export default DontForgetToFooter
 
