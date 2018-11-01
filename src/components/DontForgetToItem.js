@@ -45,7 +45,7 @@ const DontForgetToItem = ({id, position, text, done}) => {
                             <DontForgetToItemDragHandler {...provided.dragHandleProps} />
                             <DontForgetToItemToggle id={id} done={done}/>
                             <DontForgetToItemText id={id} text={text} done={done}/>
-                            <DontForgetToItemDelete id={id}/>
+                            <DontForgetToItemDelete id={id} position={position}/>
                         </div>
                     )}
                 </Draggable>
