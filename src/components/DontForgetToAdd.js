@@ -1,8 +1,6 @@
 import React from "react"
-import { connect } from "react-redux"
-import {Mutation} from "react-apollo";
+import {Mutation, Query} from "react-apollo";
 import gql from "graphql-tag";
-import {addTask} from "../actionCreators"
 import "../style/DontForgetToAdd.css"
 
 const ADD_TASK = gql`
@@ -16,21 +14,31 @@ const ADD_TASK = gql`
     }
 `;
 
-const mapStateToProps = state => {
-    return {
-        token : state.user.token
+const GET_TOKEN = gql`
+    {
+        token @client
     }
-};
+`;
 
-const DontForgetToAdd = ({ token, dispatch }) => {
-    const onEnter = (e, createTask) => {
+const DontForgetToAdd = (props) => {
+    const onEnter = (e, addTask) => {
         if (e.key === 'Enter') {
             e.stopPropagation();
             e.preventDefault();
             let text = e.target.value.trim();
             if (text) {
-                createTask({
-                    variables: {text}
+                addTask({
+                    variables: {text},
+                    optimisticResponse: {
+                        __typename: "Mutation",
+                        addTask: {
+                            __typename: "Task",
+                            id: `${+new Date()}`,
+                            position: 0,
+                            text,
+                            done: false
+                        }
+                    },
                 });
             }
             e.target.value = ''
@@ -38,27 +46,49 @@ const DontForgetToAdd = ({ token, dispatch }) => {
     };
 
     return (
-        <Mutation
-            mutation={ADD_TASK}
-            onCompleted={(data) => {
-                let task = data.addTask;
-                dispatch(addTask(null, task.text));
-            }}
-            context={{
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }}>
-            {(createTask, {loading, error}) => (
-                <input
-                    className="dont-forget-to-add"
-                    type="text"
-                    placeholder="write here and press ⏎ ( Enter ) to add a new task"
-                    onKeyDown={(e) => onEnter(e, createTask)}
-                />
+        <Query query={GET_TOKEN}>
+            {({data: {token}}) => (
+                <Mutation
+                    mutation={ADD_TASK}
+                    update={(cache, { data: { addTask } })=>{
+                        const query = gql`
+                            query GetTasks {
+                                tasks @client {
+                                    id
+                                    position
+                                    text
+                                    done
+                                }
+                            }
+                        `;
+                        const previous = cache.readQuery({ query });
+                        cache.writeData({
+                            query,
+                            data: {
+                                tasks: [
+                                    addTask,
+                                    ...(previous.tasks.map(task=>({...task, position: task.position + 1})))
+                                ]
+                            }
+                        });
+                    }}
+                    context={{
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }}>
+                    {(addTask, {loading, error}) => (
+                        <input
+                            className="dont-forget-to-add"
+                            type="text"
+                            placeholder="write here and press ⏎ ( Enter ) to add a new task"
+                            onKeyDown={(e) => onEnter(e, addTask)}
+                        />
+                    )}
+                </Mutation>
             )}
-        </Mutation>
+        </Query>
     )
 };
 
-export default connect(mapStateToProps)(DontForgetToAdd)
+export default DontForgetToAdd
