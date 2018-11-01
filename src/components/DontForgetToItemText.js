@@ -1,16 +1,12 @@
 import React from "react";
-import {connect} from "react-redux";
 import {Mutation, Query} from "react-apollo";
 import gql from "graphql-tag";
-import {editTask} from "../actionCreators";
 
 const UPDATE_TASK = gql`
     mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
         updateTask(id: $id, text: $text, done: $done) {
             id
-            position
             text
-            done
         }
     }
 `;
@@ -21,7 +17,7 @@ const GET_TOKEN = gql`
     }
 `;
 
-const DontForgetToItemText = ({id, text, done, dispatch}) => {
+const DontForgetToItemText = ({id, text, done}) => {
 
     const WAIT_INTERVAL = 1000;
     let timer = null;
@@ -30,7 +26,17 @@ const DontForgetToItemText = ({id, text, done, dispatch}) => {
         let text = e.target.value;
         clearTimeout(timer);
         timer = setTimeout(() => {
-            updateTask({variables: {id, text}});
+            updateTask({
+                variables: {id, text},
+                optimisticResponse: {
+                    __typename: "Mutation",
+                    updateTask: {
+                        __typename: "Task",
+                        id,
+                        text
+                    }
+                }
+            });
         }, WAIT_INTERVAL);
     };
 
@@ -39,9 +45,16 @@ const DontForgetToItemText = ({id, text, done, dispatch}) => {
             {({data: {token}}) => (
                 <Mutation
                     mutation={UPDATE_TASK}
-                    onCompleted={(data) => {
-                        let task = data.updateTask;
-                        dispatch(editTask(null, id, task.text))
+                    update={(cache, { data: { updateTask }})=>{
+                        const id = `Task:${updateTask.id}`;
+                        const fragment = gql`
+                           fragment taskText on Task {
+                             text
+                           }
+                        `;
+                        const task = cache.readFragment({ fragment, id });
+                        const data = { ...task, text: updateTask.text};
+                        cache.writeFragment({ fragment, id, data });
                     }}
                     context={{
                         headers: {
@@ -58,4 +71,4 @@ const DontForgetToItemText = ({id, text, done, dispatch}) => {
     );
 };
 
-export default connect()(DontForgetToItemText)
+export default DontForgetToItemText
