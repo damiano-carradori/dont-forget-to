@@ -1,17 +1,14 @@
 import React from "react";
-import {connect} from "react-redux";
 import {Mutation, Query} from "react-apollo";
 import gql from "graphql-tag";
+import _ from "lodash";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {deleteTask} from "../actionCreators";
 
 const DELETE_TASK = gql`
     mutation DeleteTask($id: ID!) {
         deleteTask(id: $id) {
             id
             position
-            text
-            done
         }
     }
 `;
@@ -22,15 +19,46 @@ const GET_TOKEN = gql`
     }
 `;
 
-const DontForgetToItemDelete = ({id, dispatch}) => {
+const DontForgetToItemDelete = ({id, position}) => {
 
     return (
         <Query query={GET_TOKEN}>
             {({data: {token}}) => (
                 <Mutation
                     mutation={DELETE_TASK}
-                    onCompleted={(data) => {
-                        dispatch(deleteTask(null, id))
+                    ignoreResults={true}
+                    optimisticResponse={{
+                        __typename: "Mutation",
+                        deleteTask: {
+                            __typename: "Task",
+                            id,
+                            position
+                        }
+                    }}
+                    update={(cache)=>{
+                        const query = gql`
+                            query GetTasks {
+                                tasks @client {
+                                    id
+                                    position
+                                    text
+                                    done
+                                }
+                            }
+                        `;
+                        const previous = cache.readQuery({ query });
+                        cache.writeQuery({
+                            query,
+                            data: {
+                                tasks: _.filter(
+                                    previous.tasks.map(task => ({
+                                        ...task,
+                                        ...(task.position > position && {position: task.position - 1})
+                                    })),
+                                    task => task.id !== id
+                                )
+                            }
+                        });
                     }}
                     context={{
                         headers: {
@@ -49,4 +77,4 @@ const DontForgetToItemDelete = ({id, dispatch}) => {
     );
 };
 
-export default connect()(DontForgetToItemDelete)
+export default DontForgetToItemDelete
