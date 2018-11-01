@@ -62,7 +62,7 @@ const DontForgetToAdd = (props) => {
                             }
                         `;
                         const previous = cache.readQuery({ query });
-                        cache.writeData({
+                        cache.writeQuery({
                             query,
                             data: {
                                 tasks: [
