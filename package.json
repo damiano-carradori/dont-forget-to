@@ -12,14 +12,11 @@
     "react": "^16.4.0",
     "react-beautiful-dnd": "^9.0.0",
     "react-dom": "^16.4.0",
-    "react-redux": "^5.0.7",
     "react-scripts": "^1.1.5",
-    "redux": "^4.0.0",
     "graphql": "^14.0.2",
     "react-apollo": "^2.2.4",
     "apollo-boost": "^0.1.16",
-    "graphql-tag": "^2.10.0",
-    "redux-saga": "^0.16.1"
+    "graphql-tag": "^2.10.0"
   },
   "scripts": {
     "start": "react-scripts start",
