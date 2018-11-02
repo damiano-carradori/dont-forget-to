@@ -1,6 +1,6 @@
 import React from "react"
 import {Mutation, Query} from "react-apollo"
-import {EDIT_TASK, GET_TOKEN, TEXT_TASK_FRAGMENT} from "../graphql"
+import {EDIT_TASK, EDIT_TASK_CLIENT, GET_TOKEN, TEXT_TASK_FRAGMENT} from "../graphql"
 
 const DontForgetToItemText = ({id, text, done}) => {
 
@@ -29,7 +29,7 @@ const DontForgetToItemText = ({id, text, done}) => {
         <Query query={GET_TOKEN}>
             {({data: {token}}) => (
                 <Mutation
-                    mutation={EDIT_TASK}
+                    mutation={token?EDIT_TASK:EDIT_TASK_CLIENT}
                     update={(cache, {data: {updateTask}}) => {
                         const id = `Task:${updateTask.id}`;
                         const task = cache.readFragment({fragment: TEXT_TASK_FRAGMENT, id});

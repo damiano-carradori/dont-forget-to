@@ -2,7 +2,7 @@ import React from "react"
 import {Mutation, Query} from "react-apollo"
 import _ from "lodash"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {DELETE_TASK, GET_TOKEN, GET_TASKS} from "../graphql"
+import {DELETE_TASK, DELETE_TASK_CLIENT, GET_TOKEN, GET_TASKS} from "../graphql"
 
 const DontForgetToItemDelete = ({id, position}) => {
 
@@ -10,7 +10,7 @@ const DontForgetToItemDelete = ({id, position}) => {
         <Query query={GET_TOKEN}>
             {({data: {token}}) => (
                 <Mutation
-                    mutation={DELETE_TASK}
+                    mutation={token?DELETE_TASK:DELETE_TASK_CLIENT}
                     ignoreResults={true}
                     optimisticResponse={{
                         __typename: "Mutation",
@@ -44,7 +44,7 @@ const DontForgetToItemDelete = ({id, position}) => {
                         <FontAwesomeIcon
                             icon="trash"
                             className="delete-task"
-                            onClick={() => deleteTask({variables: {id}})}/>
+                            onClick={() => deleteTask({variables: {id, position}})}/>
                     )}
                 </Mutation>
             )}

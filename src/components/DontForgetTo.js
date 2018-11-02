@@ -15,18 +15,20 @@ const DontForgetTo = (props) => {
             {({data: {token}, client}) => (
                 <DragDropContext onDragEnd={result => {
                     let {source, destination} = result;
-                    client.mutate({
-                        mutation: MOVE_TASK,
-                        variables: {
-                            from: source.index,
-                            to: destination.index
-                        },
-                        context: {
-                            headers: {
-                                "Authorization": `Bearer ${token}`
+                    if(token) {
+                        client.mutate({
+                            mutation: MOVE_TASK,
+                            variables: {
+                                from: source.index,
+                                to: destination.index
+                            },
+                            context: {
+                                headers: {
+                                    "Authorization": `Bearer ${token}`
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                     const previous = client.readQuery({query: GET_TASKS});
                     let [others, movingTask] = _.partition(previous.tasks, task => task.position !== source.index);
                     others.splice(destination.index, 0, ...movingTask);

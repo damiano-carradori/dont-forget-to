@@ -6,6 +6,35 @@ export const defaults = {
     filter: "SHOW_ACTIVE"
 };
 
+export const resolvers = {
+    Mutation: {
+        addTask: (root, { text } ) => {
+            return {
+                __typename: 'Task',
+                id: `${+new Date()}`,
+                text,
+                position: 0,
+                done: false,
+            }
+        },
+        deleteTask: (root, { id, position }) => {
+            return {
+                __typename: 'Task',
+                id,
+                position
+            }
+        },
+        updateTask: (root, { id, text, done }) => {
+            return {
+                __typename: 'Task',
+                id,
+                text,
+                done
+            }
+        }
+    }
+};
+
 export const typeDefs = `
   type User {
     id: ID
@@ -26,4 +55,4 @@ export const typeDefs = `
     tasks: [Task]
     filter: String
   }
-`
+`;

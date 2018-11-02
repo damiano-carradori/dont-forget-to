@@ -38,6 +38,16 @@ export const ADD_TASK = gql`
         }
     }
 `;
+export const ADD_TASK_CLIENT = gql`
+    mutation AddTask($text: String!) {
+        addTask(text: $text) @client{
+            id
+            position
+            text
+            done
+        }
+    }
+`;
 
 export const GET_VISIBILITY_FILTER = gql`
     {
@@ -54,6 +64,15 @@ export const TOGGLE_TASK = gql`
     }
 `;
 
+export const TOGGLE_TASK_CLIENT = gql`
+    mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
+        updateTask(id: $id, text: $text, done: $done) @client{
+            id
+            done
+        }
+    }
+`;
+
 export const EDIT_TASK = gql`
     mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
         updateTask(id: $id, text: $text, done: $done) {
@@ -63,9 +82,27 @@ export const EDIT_TASK = gql`
     }
 `;
 
+export const EDIT_TASK_CLIENT = gql`
+    mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
+        updateTask(id: $id, text: $text, done: $done) @client{
+            id
+            text
+        }
+    }
+`;
+
 export const DELETE_TASK = gql`
     mutation DeleteTask($id: ID!) {
         deleteTask(id: $id) {
+            id
+            position
+        }
+    }
+`;
+
+export const DELETE_TASK_CLIENT = gql`
+    mutation DeleteTask($id: ID!, $position: Int) {
+        deleteTask(id: $id, position: $position) @client{
             id
             position
         }

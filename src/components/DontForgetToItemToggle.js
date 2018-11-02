@@ -1,7 +1,7 @@
 import React from "react"
 import {Mutation, Query} from "react-apollo"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {TOGGLE_TASK, GET_TOKEN, DONE_TASK_FRAGMENT} from "../graphql"
+import {TOGGLE_TASK, TOGGLE_TASK_CLIENT, GET_TOKEN, DONE_TASK_FRAGMENT} from "../graphql"
 
 const DontForgetToItemToggle = ({id, done}) => {
 
@@ -9,7 +9,7 @@ const DontForgetToItemToggle = ({id, done}) => {
         <Query query={GET_TOKEN}>
             {({data: {token}}) => (
                 <Mutation
-                    mutation={TOGGLE_TASK}
+                    mutation={token?TOGGLE_TASK:TOGGLE_TASK_CLIENT}
                     update={(cache, {data: {updateTask}}) => {
                         const id = `Task:${updateTask.id}`;
                         const task = cache.readFragment({fragment: DONE_TASK_FRAGMENT, id});

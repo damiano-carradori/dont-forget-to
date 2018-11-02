@@ -1,6 +1,6 @@
 import React from "react"
 import {Mutation, Query} from "react-apollo"
-import {ADD_TASK, GET_TOKEN, GET_TASKS} from "../graphql"
+import {ADD_TASK, ADD_TASK_CLIENT, GET_TOKEN, GET_TASKS} from "../graphql"
 import "../style/DontForgetToAdd.css"
 
 const DontForgetToAdd = (props) => {
@@ -32,7 +32,7 @@ const DontForgetToAdd = (props) => {
         <Query query={GET_TOKEN}>
             {({data: {token}}) => (
                 <Mutation
-                    mutation={ADD_TASK}
+                    mutation={token?ADD_TASK:ADD_TASK_CLIENT}
                     update={(cache, {data: {addTask}}) => {
                         const previous = cache.readQuery({query: GET_TASKS});
                         cache.writeQuery({
