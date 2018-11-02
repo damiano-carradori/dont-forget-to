@@ -1,23 +1,8 @@
-import React from "react";
-import {Mutation, Query} from "react-apollo";
-import gql from "graphql-tag";
-import _ from "lodash";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-
-const DELETE_TASK = gql`
-    mutation DeleteTask($id: ID!) {
-        deleteTask(id: $id) {
-            id
-            position
-        }
-    }
-`;
-
-const GET_TOKEN = gql`
-    {
-        token @client
-    }
-`;
+import React from "react"
+import {Mutation, Query} from "react-apollo"
+import _ from "lodash"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {DELETE_TASK, GET_TOKEN, GET_TASKS} from "../graphql"
 
 const DontForgetToItemDelete = ({id, position}) => {
 
@@ -35,20 +20,10 @@ const DontForgetToItemDelete = ({id, position}) => {
                             position
                         }
                     }}
-                    update={(cache)=>{
-                        const query = gql`
-                            query GetTasks {
-                                tasks @client {
-                                    id
-                                    position
-                                    text
-                                    done
-                                }
-                            }
-                        `;
-                        const previous = cache.readQuery({ query });
+                    update={(cache) => {
+                        const previous = cache.readQuery({GET_TASKS});
                         cache.writeQuery({
-                            query,
+                            GET_TASKS,
                             data: {
                                 tasks: _.filter(
                                     previous.tasks.map(task => ({

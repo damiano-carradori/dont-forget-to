@@ -1,21 +1,10 @@
 import React from "react"
 import {Query} from "react-apollo"
 import {Droppable} from "react-beautiful-dnd"
-import gql from "graphql-tag";
 import cx from "classnames"
-import DontForgetToItem from "./DontForgetToItem";
+import DontForgetToItem from "./DontForgetToItem"
+import {GET_TASKS} from "../graphql"
 import "../style/DontForgetToList.css"
-
-const GET_TASKS = gql`
-    {
-        tasks @client {
-            id
-            position
-            text
-            done
-        }
-    }
-`;
 
 const DontForgetToList = (props) => {
     return (

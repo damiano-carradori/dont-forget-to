@@ -1,16 +1,8 @@
 import React from "react"
-import {Query} from "react-apollo";
-import gql from "graphql-tag";
-import _ from "lodash";
+import {Query} from "react-apollo"
+import _ from "lodash"
+import {GET_TASKS} from "../graphql"
 import "../style/DontForgetToFooter.css"
-
-const GET_TASKS = gql`
-    {
-        tasks @client {
-            done
-        }
-    }
-`;
 
 const DontForgetToFooter = (props) => {
     return (

@@ -1,26 +1,7 @@
 import React, {Component}  from "react"
-import {Mutation} from "react-apollo";
-import gql from "graphql-tag";
+import {Mutation} from "react-apollo"
 import "../style/DontForgetToSignInForm.css"
-
-const LOG_IN = gql`
-    mutation LogIn($username: String!, $password: String!) {
-        logIn(username: $username, password: $password) {
-            token
-            user{
-                id
-                username
-                profile_picture
-                tasks{
-                    id
-                    position
-                    text
-                    done
-                }
-            }
-        }
-    }
-`;
+import {LOG_IN} from "../graphql"
 
 class DontForgetToSignInForm extends Component {
     constructor(props) {
@@ -44,7 +25,7 @@ class DontForgetToSignInForm extends Component {
         });
     }
 
-    handleSubmit(event,signIn) {
+    handleSubmit(event, signIn) {
         let {username, password} = this.state;
         signIn({variables: {username, password}});
         event.preventDefault();
@@ -54,7 +35,7 @@ class DontForgetToSignInForm extends Component {
         return (
             <Mutation
                 mutation={LOG_IN}
-                update={(cache, { data: { logIn } })=>{
+                update={(cache, {data: {logIn}}) => {
                     cache.writeData({
                         data: {
                             side: false,
@@ -64,11 +45,14 @@ class DontForgetToSignInForm extends Component {
                         }
                     });
                 }}
-                onError={()=>false}>
-                {(signIn, { loading, error }) => (
-                    <form className="dont-forget-to-sign-in-form" onSubmit={(e)=>this.handleSubmit(e,signIn)}>
-                        <input className={error && "error"} id="username" type="text" name="username" placeholder="Username" autoComplete="username" onChange={this.handleInputChange}/>
-                        <input className={error && "error"} id="password" type="password" name="password" placeholder="Password" autoComplete="current-password" onChange={this.handleInputChange}/>
+                onError={() => false}>
+                {(signIn, {loading, error}) => (
+                    <form className="dont-forget-to-sign-in-form" onSubmit={(e) => this.handleSubmit(e, signIn)}>
+                        <input className={error && "error"} id="username" type="text" name="username"
+                               placeholder="Username" autoComplete="username" onChange={this.handleInputChange}/>
+                        <input className={error && "error"} id="password" type="password" name="password"
+                               placeholder="Password" autoComplete="current-password"
+                               onChange={this.handleInputChange}/>
                         {error && <div className="error-message">{error.message}</div>}
                         {loading && <div className="loading-button">Loading...</div>}
                         {!loading && <button type="submit">Sign in</button>}

@@ -1,7 +1,7 @@
 import React  from "react"
 import {Query} from "react-apollo";
 import {DragDropContext} from "react-beautiful-dnd"
-import _ from "lodash";
+import _ from "lodash"
 import DontForgetToFilter from "./DontForgetToFilter"
 import DontForgetToAdd from "./DontForgetToAdd"
 import DontForgetToList from "./DontForgetToList"
@@ -21,13 +21,13 @@ const DontForgetTo = (props) => {
                             from: source.index,
                             to: destination.index
                         },
-                        context:{
+                        context: {
                             headers: {
                                 "Authorization": `Bearer ${token}`
                             }
                         }
                     });
-                    const previous = client.readQuery({ GET_TASKS });
+                    const previous = client.readQuery({GET_TASKS});
                     let [others, movingTask] = _.partition(previous.tasks, task => task.position !== source.index);
                     others.splice(destination.index, 0, ...movingTask);
                     client.writeQuery({
