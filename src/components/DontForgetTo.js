@@ -2,29 +2,12 @@ import React  from "react"
 import {Query} from "react-apollo";
 import {DragDropContext} from "react-beautiful-dnd"
 import _ from "lodash";
-import gql from "graphql-tag";
 import DontForgetToFilter from "./DontForgetToFilter"
 import DontForgetToAdd from "./DontForgetToAdd"
 import DontForgetToList from "./DontForgetToList"
 import DontForgetToFooter from "./DontForgetToFooter"
+import {MOVE_TASK, GET_TOKEN, GET_TASKS} from "../graphql"
 import "../style/DontForgetToContainer.css"
-
-const MOVE_TASK = gql`
-    mutation MoveTask($from: Int!, $to: Int!) {
-        moveTask(from: $from, to: $to) {
-            id
-            position
-            text
-            done
-        }
-    }
-`;
-
-const GET_TOKEN = gql`
-    {
-        token @client
-    }
-`;
 
 const DontForgetTo = (props) => {
     return (
@@ -44,21 +27,11 @@ const DontForgetTo = (props) => {
                             }
                         }
                     });
-                    const query = gql`
-                        query GetTasks {
-                            tasks @client {
-                                id
-                                position
-                                text
-                                done
-                            }
-                        }
-                    `;
-                    const previous = client.readQuery({ query });
+                    const previous = client.readQuery({ GET_TASKS });
                     let [others, movingTask] = _.partition(previous.tasks, task => task.position !== source.index);
                     others.splice(destination.index, 0, ...movingTask);
                     client.writeQuery({
-                        query,
+                        GET_TASKS,
                         data: {
                             tasks: others.map((task, index) => ({
                                 ...task,
