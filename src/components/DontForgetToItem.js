@@ -25,7 +25,7 @@ const DontForgetToItem = ({id, position, text, done}) => {
 
     return (
         <Query query={GET_VISIBILITY_FILTER}>
-            {({data: {filter}, client}) => (
+            {({data: {filter}}) => (
                 <Draggable draggableId={id} index={position}>
                     {provided => (
                         <div

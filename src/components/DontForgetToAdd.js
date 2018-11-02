@@ -34,9 +34,9 @@ const DontForgetToAdd = (props) => {
                 <Mutation
                     mutation={ADD_TASK}
                     update={(cache, {data: {addTask}}) => {
-                        const previous = cache.readQuery({GET_TASKS});
+                        const previous = cache.readQuery({query: GET_TASKS});
                         cache.writeQuery({
-                            GET_TASKS,
+                            query: GET_TASKS,
                             data: {
                                 tasks: [
                                     addTask,

@@ -27,11 +27,11 @@ const DontForgetTo = (props) => {
                             }
                         }
                     });
-                    const previous = client.readQuery({GET_TASKS});
+                    const previous = client.readQuery({query: GET_TASKS});
                     let [others, movingTask] = _.partition(previous.tasks, task => task.position !== source.index);
                     others.splice(destination.index, 0, ...movingTask);
                     client.writeQuery({
-                        GET_TASKS,
+                        query: GET_TASKS,
                         data: {
                             tasks: others.map((task, index) => ({
                                 ...task,

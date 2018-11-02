@@ -12,9 +12,9 @@ const DontForgetToItemToggle = ({id, done}) => {
                     mutation={TOGGLE_TASK}
                     update={(cache, {data: {updateTask}}) => {
                         const id = `Task:${updateTask.id}`;
-                        const task = cache.readFragment({DONE_TASK_FRAGMENT, id});
+                        const task = cache.readFragment({fragment: DONE_TASK_FRAGMENT, id});
                         const data = {...task, done: updateTask.done};
-                        cache.writeFragment({DONE_TASK_FRAGMENT, id, data});
+                        cache.writeFragment({fragment: DONE_TASK_FRAGMENT, id, data});
                     }}
                     context={{
                         headers: {

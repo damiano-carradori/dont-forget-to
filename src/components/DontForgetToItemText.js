@@ -32,9 +32,9 @@ const DontForgetToItemText = ({id, text, done}) => {
                     mutation={EDIT_TASK}
                     update={(cache, {data: {updateTask}}) => {
                         const id = `Task:${updateTask.id}`;
-                        const task = cache.readFragment({TEXT_TASK_FRAGMENT, id});
+                        const task = cache.readFragment({fragment: TEXT_TASK_FRAGMENT, id});
                         const data = {...task, text: updateTask.text};
-                        cache.writeFragment({TEXT_TASK_FRAGMENT, id, data});
+                        cache.writeFragment({fragment: TEXT_TASK_FRAGMENT, id, data});
                     }}
                     context={{
                         headers: {

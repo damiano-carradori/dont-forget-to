@@ -21,9 +21,9 @@ const DontForgetToItemDelete = ({id, position}) => {
                         }
                     }}
                     update={(cache) => {
-                        const previous = cache.readQuery({GET_TASKS});
+                        const previous = cache.readQuery({query: GET_TASKS});
                         cache.writeQuery({
-                            GET_TASKS,
+                            query: GET_TASKS,
                             data: {
                                 tasks: _.filter(
                                     previous.tasks.map(task => ({
