@@ -27,3 +27,14 @@ export const GET_TASKS = gql`
         }
     }
 `;
+
+export const ADD_TASK = gql`
+    mutation AddTask($text: String!) {
+        addTask(text: $text) {
+            id
+            position
+            text
+            done
+        }
+    }
+`;

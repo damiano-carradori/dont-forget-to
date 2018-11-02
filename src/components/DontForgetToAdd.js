@@ -1,24 +1,7 @@
 import React from "react"
-import {Mutation, Query} from "react-apollo";
-import gql from "graphql-tag";
+import {Mutation, Query} from "react-apollo"
+import {ADD_TASK, GET_TOKEN, GET_TASKS} from "../graphql"
 import "../style/DontForgetToAdd.css"
-
-const ADD_TASK = gql`
-    mutation AddTask($text: String!) {
-        addTask(text: $text) {
-            id
-            position
-            text
-            done
-        }
-    }
-`;
-
-const GET_TOKEN = gql`
-    {
-        token @client
-    }
-`;
 
 const DontForgetToAdd = (props) => {
     const onEnter = (e, addTask) => {
@@ -51,19 +34,9 @@ const DontForgetToAdd = (props) => {
                 <Mutation
                     mutation={ADD_TASK}
                     update={(cache, { data: { addTask } })=>{
-                        const query = gql`
-                            query GetTasks {
-                                tasks @client {
-                                    id
-                                    position
-                                    text
-                                    done
-                                }
-                            }
-                        `;
-                        const previous = cache.readQuery({ query });
+                        const previous = cache.readQuery({ GET_TASKS });
                         cache.writeQuery({
-                            query,
+                            GET_TASKS,
                             data: {
                                 tasks: [
                                     addTask,
