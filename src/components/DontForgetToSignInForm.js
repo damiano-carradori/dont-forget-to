@@ -1,7 +1,7 @@
 import React, {Component}  from "react"
 import {Mutation} from "react-apollo"
-import "../style/DontForgetToSignInForm.css"
 import {LOG_IN} from "../graphql"
+import "../style/DontForgetToSignInForm.css"
 
 class DontForgetToSignInForm extends Component {
     constructor(props) {
@@ -46,7 +46,7 @@ class DontForgetToSignInForm extends Component {
                     });
                 }}
                 onError={() => false}>
-                {(signIn, {loading, error}) => (
+                {(signIn, {loading, error, client}) => (
                     <form className="dont-forget-to-sign-in-form" onSubmit={(e) => this.handleSubmit(e, signIn)}>
                         <input className={error && "error"} id="username" type="text" name="username"
                                placeholder="Username" autoComplete="username" onChange={this.handleInputChange}/>
@@ -56,6 +56,8 @@ class DontForgetToSignInForm extends Component {
                         {error && <div className="error-message">{error.message}</div>}
                         {loading && <div className="loading-button">Loading...</div>}
                         {!loading && <button type="submit">Sign in</button>}
+                        <hr className="dont-forget-to-separator"/>
+                        <a className="dont-forget-to-sign-in-link" onClick={()=>client.writeData({data: {signup: true}})}>Are you new? Sign up now</a>
                     </form>
                 )}
             </Mutation>
