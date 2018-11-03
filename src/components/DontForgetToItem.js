@@ -1,43 +1,15 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import cx from 'classnames'
-import { deleteTask, toggleTask, editTask } from "../actionCreators";
-import { Draggable } from "react-beautiful-dnd"
-import '../style/DontForgetToItem.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from "react"
+import {Query} from "react-apollo"
+import {Draggable} from "react-beautiful-dnd"
+import cx from "classnames"
+import DontForgetToItemToggle from "./DontForgetToItemToggle"
+import DontForgetToItemText from "./DontForgetToItemText"
+import DontForgetToItemDelete from "./DontForgetToItemDelete"
+import DontForgetToItemDragHandler from "./DontForgetToItemDragHandler"
+import {GET_VISIBILITY_FILTER} from "../graphql"
+import "../style/DontForgetToItem.css"
 
-const mapStateToProps = state => {
-    return {
-        token: state.user.token,
-        filter: state.filter
-    }
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onToggle: (token, id, done) => {
-            dispatch(toggleTask(token, id, done))
-        },
-        onDeleteClick: (token, id) => {
-            dispatch(deleteTask(token, id))
-        },
-        onEdit: (token, id, text) => {
-            dispatch(editTask(token, id, text))
-        }
-    }
-};
-const DontForgetToItem = ({token, filter, id, position, text, done, onToggle, onDeleteClick, onEdit}) => {
-    const WAIT_INTERVAL = 1000;
-    let timer = null;
-
-    const inputChange = e => {
-        let text = e.target.value;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            onEdit(token, id, text);
-        }, WAIT_INTERVAL);
-    };
-
+const DontForgetToItem = ({id, position, text, done}) => {
     const visible = (filter, done) => {
         switch (filter) {
             case 'SHOW_ALL':
@@ -52,28 +24,28 @@ const DontForgetToItem = ({token, filter, id, position, text, done, onToggle, on
     };
 
     return (
-        <Draggable draggableId={id} index={position}>
-            {provided => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    className={cx(
-                        'dont-forget-to-item',
-                        {hidden: !visible(filter, done)},
-                        {done}
-                    )}>
-                    <div {...provided.dragHandleProps} className="drag-task">
-                        <FontAwesomeIcon icon="ellipsis-v"/>
-                    </div>
-                    <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']}
-                                     onClick={() => onToggle(token, id, !done)}/>
-                    <input defaultValue={text} type="text" disabled={done} onKeyUp={inputChange}/>
-                    <FontAwesomeIcon className="delete-task" icon="trash"
-                                     onClick={() => onDeleteClick(token, id)}/>
-                </div>
+        <Query query={GET_VISIBILITY_FILTER}>
+            {({data: {filter}}) => (
+                <Draggable draggableId={id} index={position}>
+                    {provided => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            className={cx(
+                                'dont-forget-to-item',
+                                {hidden: !visible(filter, done)},
+                                {done}
+                            )}>
+                            <DontForgetToItemDragHandler {...provided.dragHandleProps} />
+                            <DontForgetToItemToggle id={id} done={done}/>
+                            <DontForgetToItemText id={id} text={text} done={done}/>
+                            <DontForgetToItemDelete id={id} position={position}/>
+                        </div>
+                    )}
+                </Draggable>
             )}
-        </Draggable>
+        </Query>
     )
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(DontForgetToItem)
+export default DontForgetToItem

@@ -1,31 +1,22 @@
-import React  from 'react'
-import { connect } from 'react-redux'
-import cx from 'classnames'
-import { setFilter } from '../actionCreators'
+import React  from "react"
+import {Query} from "react-apollo"
+import cx from "classnames"
+import {GET_VISIBILITY_FILTER} from "../graphql"
 
-const mapStateToProps = ( state, props )=> {
-    return {
-        active: state.filter===props.filter
-    }
-};
-const mapDispatchToProps = dispatch => {
-    return {
-        onFilterClick : filter => {
-            dispatch(setFilter(filter))
-        }
-    }
-};
-
-let DontForgetToFilterButton = ({active, label, filter, onFilterClick}) => {
+const DontForgetToFilterButton = ({label, filter}) => {
     return (
-        <button
-            className={cx(
-                {active: active}
+        <Query query={GET_VISIBILITY_FILTER}>
+            {({data, client}) => (
+                <button
+                    className={cx(
+                        {active: data.filter === filter}
+                    )}
+                    onClick={() => client.writeData({data: {filter}})}>
+                    {label}
+                </button>
             )}
-            onClick={() => onFilterClick(filter)}>
-            {label}
-        </button>
+        </Query>
     )
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(DontForgetToFilterButton);
+export default DontForgetToFilterButton;

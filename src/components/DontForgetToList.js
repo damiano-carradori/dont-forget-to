@@ -1,39 +1,38 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Droppable } from "react-beautiful-dnd"
-import cx from 'classnames'
-import DontForgetToItem from "./DontForgetToItem";
-import '../style/DontForgetToList.css'
+import React from "react"
+import {Query} from "react-apollo"
+import {Droppable} from "react-beautiful-dnd"
+import cx from "classnames"
+import DontForgetToItem from "./DontForgetToItem"
+import {GET_TASKS} from "../graphql"
+import "../style/DontForgetToList.css"
 
-const mapStateToProps = state => {
-    return {
-        tasks : state.tasks
-    }
-};
-
-const DontForgetToList = ({tasks}) => {
+const DontForgetToList = (props) => {
     return (
-        <Droppable droppableId="dont-forget-to-list">
-            {provided => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className={cx(
-                        'dont-forget-to-list',
-                        {empty: !tasks.length}
-                    )}>
-                    {tasks.map(
-                        task =>
-                            <DontForgetToItem
-                                key={task.id}
-                                {...task}
-                            />
+        <Query query={GET_TASKS}>
+            {({data: {tasks}}) => (
+                <Droppable droppableId="dont-forget-to-list">
+                    {provided => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={cx(
+                                'dont-forget-to-list',
+                                {empty: !tasks.length}
+                            )}>
+                            {tasks.map(
+                                task =>
+                                    <DontForgetToItem
+                                        key={task.id}
+                                        {...task}
+                                    />
+                            )}
+                            {provided.placeholder}
+                        </div>
                     )}
-                    {provided.placeholder}
-                </div>
+                </Droppable>
             )}
-        </Droppable>
+        </Query>
     )
 };
 
-export default connect(mapStateToProps)(DontForgetToList)
+export default DontForgetToList

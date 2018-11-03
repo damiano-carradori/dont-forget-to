@@ -1,7 +1,7 @@
-import React, { Component }  from 'react'
-import { connect } from "react-redux"
-import {signIn, toggleSignIn} from "../actionCreators"
-import '../style/DontForgetToSignInForm.css'
+import React, {Component}  from "react"
+import {Mutation} from "react-apollo"
+import {LOG_IN} from "../graphql"
+import "../style/DontForgetToSignInForm.css"
 
 class DontForgetToSignInForm extends Component {
     constructor(props) {
@@ -25,25 +25,44 @@ class DontForgetToSignInForm extends Component {
         });
     }
 
-    handleSubmit(event) {
-        let {dispatch} = this.props;
+    handleSubmit(event, signIn) {
         let {username, password} = this.state;
-        dispatch(signIn(username, password));
-        dispatch(toggleSignIn());
+        signIn({variables: {username, password}});
         event.preventDefault();
     }
 
     render() {
         return (
-            <form className="dont-forget-to-sign-in-form" onSubmit={this.handleSubmit}>
-                <input id="username" type="text" name="username" placeholder="Username" autoComplete="username" onChange={this.handleInputChange}/>
-                <label htmlFor="username">Test: Admin</label>
-                <input id="password" type="password" name="password" placeholder="Password" autoComplete="current-password" onChange={this.handleInputChange}/>
-                <label htmlFor="password">Test: 1234</label>
-                <button type="submit">Sign in</button>
-            </form>
+            <Mutation
+                mutation={LOG_IN}
+                update={(cache, {data: {logIn}}) => {
+                    cache.writeData({
+                        data: {
+                            side: false,
+                            user: logIn.user,
+                            token: logIn.token,
+                            tasks: logIn.user.tasks
+                        }
+                    });
+                }}
+                onError={() => false}>
+                {(signIn, {loading, error, client}) => (
+                    <form className="dont-forget-to-sign-in-form" onSubmit={(e) => this.handleSubmit(e, signIn)}>
+                        <input className={error && "error"} id="username" type="text" name="username"
+                               placeholder="Username" autoComplete="username" onChange={this.handleInputChange}/>
+                        <input className={error && "error"} id="password" type="password" name="password"
+                               placeholder="Password" autoComplete="current-password"
+                               onChange={this.handleInputChange}/>
+                        {error && <div className="error-message">{error.message}</div>}
+                        {loading && <div className="loading-button">Loading...</div>}
+                        {!loading && <button type="submit">Sign in</button>}
+                        <hr className="dont-forget-to-separator"/>
+                        <a className="dont-forget-to-sign-in-link" onClick={()=>client.writeData({data: {signup: true}})}>Are you new? Sign up now</a>
+                    </form>
+                )}
+            </Mutation>
         );
     }
 }
 
-export default connect()(DontForgetToSignInForm);
+export default DontForgetToSignInForm;

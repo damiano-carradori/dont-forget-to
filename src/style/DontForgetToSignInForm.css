@@ -12,16 +12,28 @@
     padding: 8px 1em;
     border-radius: 2em;
     font-size: 1em;
-    margin: 4px 0;
+    margin: 8px 0;
     outline: none;
     transition: all ease-in-out 100ms;
 }
+.dont-forget-to-sign-in-form > input:focus{
+    box-shadow: 0 0 0 2px #c6d5d8, 0 0 3px 3px #00BCD4;
+}
+.dont-forget-to-sign-in-form > input.error{
+    box-shadow: 0 0 0 2px #c6d5d8, 0 0 3px 3px #f44336;
+}
+.error-message{
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    color: #f44336;
+}
 
-.dont-forget-to-sign-in-form > button {
+.dont-forget-to-sign-in-form > button, .loading-button {
     outline: none;
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
     font-weight: 600;
+    text-align: center;
     text-transform: uppercase;
     border: 1px solid #607d8b;
     padding: 8px;
@@ -42,4 +54,18 @@
     font-family: sans-serif;
     color: rgba(0,0,0,.6);
     margin: -2px 16px 4px;
+}
+
+.dont-forget-to-sign-in-form > hr.dont-forget-to-separator {
+    width: 65%;
+    border: none;
+    height: 1px;
+    background-color: rgba(0,0,0,.2);
+}
+
+.dont-forget-to-sign-in-form > a.dont-forget-to-sign-in-link {
+    margin: 8px 0;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
 }
