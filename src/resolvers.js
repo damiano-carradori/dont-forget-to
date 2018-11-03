@@ -3,6 +3,7 @@ export const defaults = {
     tasks: [],
     token: null,
     side: false,
+    signup: false,
     filter: "SHOW_ACTIVE"
 };
 
