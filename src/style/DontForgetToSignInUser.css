@@ -5,8 +5,10 @@
     align-items: center;
 }
 
-.dont-forget-to-sign-in-user > img {
+.dont-forget-to-sign-in-user > img.dont-forget-to-sign-in-user-profile-picture {
     border-radius: 50%;
+    width: 80px;
+    height: 80px;
 }
 
 .dont-forget-to-sign-in-user > .user-name {
