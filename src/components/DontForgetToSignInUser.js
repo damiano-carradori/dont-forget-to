@@ -1,6 +1,7 @@
 import React  from "react"
 import {Query} from "react-apollo"
 import {GET_ME, GET_TOKEN} from "../graphql"
+import userImage from "../images/user.png"
 import "../style/DontForgetToSignInUser.css"
 
 const DontForgetToSignInUser = (props) => {
@@ -9,6 +10,7 @@ const DontForgetToSignInUser = (props) => {
             {({data: {token}}) => (
                 <Query
                     query={GET_ME}
+                    fetchPolicy="network-only"
                     onError={() => false}
                     context={{
                         headers: {
@@ -19,7 +21,8 @@ const DontForgetToSignInUser = (props) => {
                         return (
                             <div className="dont-forget-to-sign-in-user">
                                 <img
-                                    src={loading ? '' : me.profile_picture}
+                                    className="dont-forget-to-sign-in-user-profile-picture"
+                                    src={loading ? '' : (!me.profile_picture?userImage:me.profile_picture)}
                                     alt="User profile pic"/>
                                 <div className="user-name">{loading ? '' : me.username}</div>
                                 <button

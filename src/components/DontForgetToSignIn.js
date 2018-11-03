@@ -11,7 +11,7 @@ const DontForgetToSignIn = (props) => {
                 <div className="dont-forget-to-sign-in" onClick={() => client.writeData({data: {side: true}})}>
                     <div className="user-name">{user === null ? 'Sign in' : user.username}</div>
                     <img
-                        src={user === null ? userImage : user.profile_picture}
+                        src={user === null || !user.profile_picture ? userImage : user.profile_picture}
                         alt="User profile pic"/>
                 </div>
             )}
