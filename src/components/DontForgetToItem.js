@@ -1,81 +1,51 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import cx from 'classnames'
-import {deleteTask, toggleTask, editTask} from "../actionCreators";
-import { Draggable } from "react-beautiful-dnd"
-import '../style/DontForgetToItem.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
+import React from "react"
+import {Query} from "react-apollo"
+import {Draggable} from "react-beautiful-dnd"
+import cx from "classnames"
+import DontForgetToItemToggle from "./DontForgetToItemToggle"
+import DontForgetToItemText from "./DontForgetToItemText"
+import DontForgetToItemDelete from "./DontForgetToItemDelete"
+import DontForgetToItemDragHandler from "./DontForgetToItemDragHandler"
+import {GET_VISIBILITY_FILTER} from "../graphql"
+import "../style/DontForgetToItem.css"
 
-const DELETE_TASK = gql`
-    mutation DeleteTask($id: ID!) {
-        deleteTask(id: $id)
-    }
-`;
-const UPDATE_TASK = gql`
-    mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
-        updateTask(id: $id, text: $text, done: $done)
-    }
-`;
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onToggle : id => {
-            dispatch(toggleTask(id))
-        },
-        onDeleteClick : id => {
-            dispatch(deleteTask(id))
-        },
-        onEdit : ( id, text ) => {
-            dispatch(editTask(id, text))
+const DontForgetToItem = ({id, position, text, done}) => {
+    const visible = (filter, done) => {
+        switch (filter) {
+            case 'SHOW_ALL':
+                return true;
+            case 'SHOW_ACTIVE':
+                return !done;
+            case 'SHOW_COMPLETED':
+                return done;
+            default:
+                return false;
         }
-    }
-};
+    };
 
-let DontForgetToItem = ({ index, id, done, text, onToggle, onDeleteClick, onEdit }) => {
     return (
-        <Draggable draggableId={id} index={index}>
-            {provided => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    className={cx(
-                        'dont-forget-to-item',
-                        {done: done}
-                    )}>
-                    <div {...provided.dragHandleProps} className="drag-task">
-                        <FontAwesomeIcon icon="ellipsis-v"/>
-                    </div>
-                    <Mutation mutation={UPDATE_TASK}>
-                        {(updateTask) => (
-                            <FontAwesomeIcon className="toggle-task" icon={['far', 'check-circle']} onClick={() => {
-                                updateTask({variables: {id, done: !done}});
-                                onToggle(id);
-                            }}/>
-                        )}
-                    </Mutation>
-                    <Mutation mutation={UPDATE_TASK}>
-                        {(updateTask)=>(
-                            <input defaultValue={text} type="text" disabled={done} onKeyUp={ e => {
-                                let text = e.target.value;
-                                onEdit(id,text);
-                                updateTask({variables: {id, text}});
-                            }}/>
-                        )}
-                    </Mutation>
-                    <Mutation mutation={DELETE_TASK}>
-                        {(deleteTask) => (
-                            <FontAwesomeIcon className="delete-task" icon="trash" onClick={() => {
-                                deleteTask({variables: {id}});
-                                onDeleteClick(id);
-                            }}/>
-                        )}
-                    </Mutation>
-                </div>
+        <Query query={GET_VISIBILITY_FILTER}>
+            {({data: {filter}}) => (
+                <Draggable draggableId={id} index={position}>
+                    {provided => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            className={cx(
+                                'dont-forget-to-item',
+                                {hidden: !visible(filter, done)},
+                                {done}
+                            )}>
+                            <DontForgetToItemDragHandler {...provided.dragHandleProps} />
+                            <DontForgetToItemToggle id={id} done={done}/>
+                            <DontForgetToItemText id={id} text={text} done={done}/>
+                            <DontForgetToItemDelete id={id} position={position}/>
+                        </div>
+                    )}
+                </Draggable>
             )}
-        </Draggable>
+        </Query>
     )
 };
 
-export default connect(null,mapDispatchToProps)(DontForgetToItem)
+export default DontForgetToItem

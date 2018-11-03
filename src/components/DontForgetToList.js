@@ -1,53 +1,38 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Droppable } from "react-beautiful-dnd"
-import _ from "lodash";
-import cx from 'classnames'
-import DontForgetToItem from "./DontForgetToItem";
-import '../style/DontForgetToList.css'
+import React from "react"
+import {Query} from "react-apollo"
+import {Droppable} from "react-beautiful-dnd"
+import cx from "classnames"
+import DontForgetToItem from "./DontForgetToItem"
+import {GET_TASKS} from "../graphql"
+import "../style/DontForgetToList.css"
 
-const mapStateToProps = state => {
-    const filterTasks = ( tasks, filter ) =>{
-        switch (filter) {
-            case 'SHOW_ALL':
-                return tasks;
-            case 'SHOW_ACTIVE':
-                return _.filter(state.tasks, task => !task.done );
-            case 'SHOW_COMPLETED':
-                return _.filter(state.tasks, task => task.done );
-            default:
-                return false;
-        }
-    };
-    return {
-        tasks : filterTasks(state.tasks, state.filter)
-    }
-};
-
-let DontForgetToList = ({tasks}) => {
+const DontForgetToList = (props) => {
     return (
-        <Droppable droppableId="dont-forget-to-list">
-            {provided => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className={cx(
-                        'dont-forget-to-list',
-                        {empty: !tasks.length}
-                    )}>
-                    {tasks.map(
-                        ( task, index ) =>
-                            <DontForgetToItem
-                                key={task.id}
-                                {...task}
-                                index={index}
-                            />
+        <Query query={GET_TASKS}>
+            {({data: {tasks}}) => (
+                <Droppable droppableId="dont-forget-to-list">
+                    {provided => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={cx(
+                                'dont-forget-to-list',
+                                {empty: !tasks.length}
+                            )}>
+                            {tasks.map(
+                                task =>
+                                    <DontForgetToItem
+                                        key={task.id}
+                                        {...task}
+                                    />
+                            )}
+                            {provided.placeholder}
+                        </div>
                     )}
-                    {provided.placeholder}
-                </div>
+                </Droppable>
             )}
-        </Droppable>
+        </Query>
     )
 };
 
-export default connect(mapStateToProps)(DontForgetToList)
+export default DontForgetToList

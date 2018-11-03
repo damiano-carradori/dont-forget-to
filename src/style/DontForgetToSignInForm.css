@@ -1,0 +1,71 @@
+.dont-forget-to-sign-in-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.dont-forget-to-sign-in-form > input {
+    border: none;
+    background-color: #b2bfc2;
+    padding: 8px 1em;
+    border-radius: 2em;
+    font-size: 1em;
+    margin: 8px 0;
+    outline: none;
+    transition: all ease-in-out 100ms;
+}
+.dont-forget-to-sign-in-form > input:focus{
+    box-shadow: 0 0 0 2px #c6d5d8, 0 0 3px 3px #00BCD4;
+}
+.dont-forget-to-sign-in-form > input.error{
+    box-shadow: 0 0 0 2px #c6d5d8, 0 0 3px 3px #f44336;
+}
+.error-message{
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    color: #f44336;
+}
+
+.dont-forget-to-sign-in-form > button, .loading-button {
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #607d8b;
+    padding: 8px;
+    cursor: pointer;
+    margin: 8px 0;
+    border-radius: 3px;
+    background-color: #607d8b;
+    color: #fafafa;
+    transition: all ease-in-out 200ms;
+}
+
+.dont-forget-to-sign-in-form > button:hover {
+    color: #607d8b;
+    background-color: transparent;
+}
+.dont-forget-to-sign-in-form > label{
+    font-size: .75em;
+    font-family: sans-serif;
+    color: rgba(0,0,0,.6);
+    margin: -2px 16px 4px;
+}
+
+.dont-forget-to-sign-in-form > hr.dont-forget-to-separator {
+    width: 65%;
+    border: none;
+    height: 1px;
+    background-color: rgba(0,0,0,.2);
+}
+
+.dont-forget-to-sign-in-form > a.dont-forget-to-sign-in-link {
+    margin: 8px 0;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+}

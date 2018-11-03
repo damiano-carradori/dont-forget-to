@@ -7,6 +7,12 @@
     border-radius: 3px;
     outline: none;
 }
+.dont-forget-to-item.hidden{
+    overflow: hidden;
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+}
 .dont-forget-to-item > .drag-task{
     display: flex;
     align-self: stretch;
