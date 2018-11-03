@@ -12,8 +12,8 @@ to trace your tasks.
 
 Next steps
 ----------
-* Add a sign up
 * Add more details to the task
+* Introduce a local storage
 * Add the possibility to create more dashboard
 * Make the tasks draggable between dashboards
 * ...
