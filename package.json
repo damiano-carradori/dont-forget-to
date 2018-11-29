@@ -7,15 +7,15 @@
     "@fortawesome/free-regular-svg-icons": "^5.1.0-11",
     "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
     "@fortawesome/react-fontawesome": "^0.1.0-11",
-    "classnames": "^2.2.5",
-    "lodash": "^4.17.10",
-    "react": "^16.4.0",
-    "react-beautiful-dnd": "^9.0.0",
-    "react-dom": "^16.4.0",
-    "react-scripts": "^1.1.5",
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.11",
+    "react": "^16.6.3",
+    "react-beautiful-dnd": "^10.0.2",
+    "react-dom": "^16.6.3",
+    "react-scripts": "^2.1.1",
     "graphql": "^14.0.2",
-    "react-apollo": "^2.2.4",
-    "apollo-boost": "^0.1.16",
+    "react-apollo": "^2.3.2",
+    "apollo-boost": "^0.1.22",
     "graphql-tag": "^2.10.0"
   },
   "scripts": {
@@ -23,5 +23,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
