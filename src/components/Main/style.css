@@ -1,0 +1,6 @@
+.dont-forget-to-container {
+    max-width: 80vw;
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+}

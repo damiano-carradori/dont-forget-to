@@ -1,9 +1,9 @@
 import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Icon from "./Icon/";
 
 const DontForgetToItemDragHandler = (props) => (
     <div {...props} className="drag-task">
-        <FontAwesomeIcon icon="ellipsis-v"/>
+        <Icon icon="ellipsis-v"/>
     </div>
 );
 

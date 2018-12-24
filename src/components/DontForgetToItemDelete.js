@@ -1,8 +1,8 @@
 import React from "react"
 import {Mutation, Query} from "react-apollo"
 import _ from "lodash"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {DELETE_TASK, DELETE_TASK_CLIENT, GET_TOKEN, GET_TASKS} from "../graphql"
+import Icon from "./Icon";
 
 const DontForgetToItemDelete = ({id, position}) => {
 
@@ -41,7 +41,7 @@ const DontForgetToItemDelete = ({id, position}) => {
                         }
                     }}>
                     {(deleteTask, {loading, error}) => (
-                        <FontAwesomeIcon
+                        <Icon
                             icon="trash"
                             className="delete-task"
                             onClick={() => deleteTask({variables: {id, position}})}/>

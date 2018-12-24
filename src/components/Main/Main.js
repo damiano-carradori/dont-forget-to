@@ -1,20 +1,24 @@
-import React, {useContext} from "react"
+import React, {useContext} from 'react'
 import {ApolloConsumer} from 'react-apollo'
-import {DragDropContext} from "react-beautiful-dnd"
+import {DragDropContext} from 'react-beautiful-dnd'
+import _ from 'lodash'
 
-import _ from "lodash"
-import DontForgetToAdd from "./DontForgetToAdd"
-import DontForgetToList from "./DontForgetToList"
+import {GET_TASKS, MOVE_TASK} from './graphql'
+
+import DontForgetToList from "./TasksList"
 import DontForgetToFooter from "./DontForgetToFooter"
-import {GET_TASKS, MOVE_TASK} from "../graphql"
 
-import "../style/DontForgetToContainer.css"
-import Filter from "./Main/Filter";
-import {AuthContext} from "./Auth";
+import AddTask from './AddTask'
 
-function DontForgetTo() {
+import Filter, {FilterContextProvider} from './Filter'
 
-    const {token} = useContext(AuthContext)
+import {AuthContext} from '../Auth'
+
+import './style.css'
+
+function Main() {
+
+    const {token} = useContext(AuthContext);
 
     const onDragEnd = (result, {mutate, readQuery, writeQuery}) => {
         const {source, destination} = result;
@@ -54,10 +58,12 @@ function DontForgetTo() {
             {client => (
                 <DragDropContext onDragEnd={result => onDragEnd(result, client)}>
                     <div className="dont-forget-to-container">
-                        <DontForgetToAdd/>
-                        <DontForgetToList/>
-                        <DontForgetToFooter/>
-                        <Filter/>
+                        <FilterContextProvider>
+                            <AddTask/>
+                            <DontForgetToList/>
+                            <DontForgetToFooter/>
+                            <Filter/>
+                        </FilterContextProvider>
                     </div>
                 </DragDropContext>
             )}
@@ -65,4 +71,8 @@ function DontForgetTo() {
     )
 }
 
-export default DontForgetTo
+export default Main
+
+
+
+

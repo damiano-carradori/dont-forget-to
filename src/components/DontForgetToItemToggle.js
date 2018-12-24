@@ -1,7 +1,7 @@
 import React from "react"
 import {Mutation, Query} from "react-apollo"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {TOGGLE_TASK, TOGGLE_TASK_CLIENT, GET_TOKEN, DONE_TASK_FRAGMENT} from "../graphql"
+import Icon from "./Icon";
 
 const DontForgetToItemToggle = ({id, done}) => {
 
@@ -22,7 +22,7 @@ const DontForgetToItemToggle = ({id, done}) => {
                         }
                     }}>
                     {(updateTask, {loading, error}) => (
-                        <FontAwesomeIcon
+                        <Icon
                             icon={['far', 'check-circle']}
                             className="toggle-task"
                             onClick={() => updateTask({

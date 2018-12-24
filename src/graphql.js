@@ -49,12 +49,6 @@ export const ADD_TASK_CLIENT = gql`
     }
 `;
 
-export const GET_VISIBILITY_FILTER = gql`
-    {
-        filter @client
-    }
-`;
-
 export const TOGGLE_TASK = gql`
     mutation UpdateTask($id: ID!, $text: String, $done: Boolean) {
         updateTask(id: $id, text: $text, done: $done) {
