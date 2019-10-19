@@ -1,9 +1,10 @@
 export const defaults = {
     user: null,
     tasks: [],
+
+    signup: false,
     token: null,
     side: false,
-    signup: false,
     filter: "SHOW_ACTIVE"
 };
 
