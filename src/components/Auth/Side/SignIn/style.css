@@ -63,9 +63,11 @@
     background-color: rgba(0,0,0,.2);
 }
 
-.dont-forget-to-sign-in-form > a.dont-forget-to-sign-in-link {
-    margin: 8px 0;
-    text-align: center;
+.dont-forget-to-sign-in-form > button.dont-forget-to-sign-in-link {
+    font: inherit;
+    background: transparent;
+    color: #607d8b;
+    text-transform: initial;
+    border: none;
     text-decoration: underline;
-    cursor: pointer;
 }

@@ -8,7 +8,7 @@ function UserBadge() {
 
     return (
         <div className="dont-forget-to-sign-in" onClick={toggleSide}>
-            <div className="user-name">{user === null ? 'Log in' : user.username}</div>
+            <div className="user-name">{!user ? 'Log in' : user.username}</div>
             <Image user={user}/>
         </div>
     )

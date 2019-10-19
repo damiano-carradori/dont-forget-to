@@ -1,39 +1,34 @@
-import React from 'react'
-import {Query} from 'react-apollo'
+import React, {useContext} from 'react'
 import {Droppable} from 'react-beautiful-dnd'
 import cx from 'classnames'
-
-import DontForgetToItem from "./DontForgetToItem"
-
-import {GET_TASKS} from './graphql'
+import Task from './Task'
+import {TasksListContext} from './TasksListContext'
 import './style.css'
 
 function TasksList() {
+    const {tasks} = useContext(TasksListContext);
+
     return (
-        <Query query={GET_TASKS}>
-            {({data: {tasks}}) => (
-                <Droppable droppableId="dont-forget-to-list">
-                    {provided => (
-                        <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                            className={cx(
-                                'dont-forget-to-list',
-                                {empty: !tasks.length}
-                            )}>
-                            {tasks.map(
-                                task =>
-                                    <DontForgetToItem
-                                        key={task.id}
-                                        {...task}
-                                    />
-                            )}
-                            {provided.placeholder}
-                        </div>
+        <Droppable droppableId="dont-forget-to-list">
+            {provided => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={cx(
+                        'dont-forget-to-list',
+                        {empty: !tasks.length},
+                    )}>
+                    {tasks.map(
+                        task =>
+                            <Task
+                                key={task.id}
+                                {...task}
+                            />
                     )}
-                </Droppable>
+                    {provided.placeholder}
+                </div>
             )}
-        </Query>
+        </Droppable>
     )
 }
 

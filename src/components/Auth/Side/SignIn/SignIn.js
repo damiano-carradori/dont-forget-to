@@ -3,9 +3,13 @@ import {Mutation} from 'react-apollo'
 import {LOG_IN} from './graphql'
 import {AuthContext} from '../../AuthContext'
 import './style.css'
+import {TasksListContext} from '../../../Main/TasksList';
 
 
 function SignIn() {
+    const {setUser, setToken, toggleSide, toggleSignUp} = useContext(AuthContext);
+    const {resetTasks} = useContext(TasksListContext);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -18,6 +22,8 @@ function SignIn() {
             case 'password':
                 setPassword(value);
                 break;
+            default:
+                break;
         }
     };
 
@@ -26,22 +32,17 @@ function SignIn() {
         signIn({variables: {username, password}});
     };
 
-
-    const {setUser, setToken, toggleSide, toggleSignUp} = useContext(AuthContext);
+    const handleSignIn = (_, {data: {logIn}}) => {
+        setUser(logIn.user);
+        toggleSide();
+        setToken(logIn.token);
+        resetTasks(logIn.user.tasks);
+    };
 
     return (
         <Mutation
             mutation={LOG_IN}
-            update={({writeData}, {data: {logIn}}) => {
-                setUser(logIn.user);
-                toggleSide();
-                setToken(logIn.token);
-                writeData({
-                    data: {
-                        tasks: logIn.user.tasks
-                    }
-                });
-            }}
+            update={handleSignIn}
             onError={() => false}>
             {(signIn, {loading, error}) => (
                 <form className="dont-forget-to-sign-in-form" onSubmit={(e) => handleSubmit(e, signIn)}>
@@ -58,7 +59,7 @@ function SignIn() {
                     {!loading && <button type="submit">Sign in</button>}
 
                     <hr className="dont-forget-to-separator"/>
-                    <a className="dont-forget-to-sign-in-link" onClick={toggleSignUp}>Are you new? Sign up now</a>
+                    <button className="dont-forget-to-sign-in-link" onClick={toggleSignUp}>Are you new?<br/>Sign up now</button>
                 </form>
             )}
         </Mutation>

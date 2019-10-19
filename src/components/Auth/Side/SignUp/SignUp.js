@@ -2,9 +2,13 @@ import React, {useContext, useState} from 'react'
 import {Mutation} from 'react-apollo'
 import {AuthContext} from '../../AuthContext'
 import {SIGN_UP} from './graphql'
+import {TasksListContext} from '../../../Main/TasksList';
 
 
 function SignUp() {
+    const {setUser, setToken, toggleSide, toggleSignUp} = useContext(AuthContext);
+    const {resetTasks} = useContext(TasksListContext);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,6 +21,8 @@ function SignUp() {
             case 'password':
                 setPassword(value);
                 break;
+            default:
+                break;
         }
     };
 
@@ -25,22 +31,17 @@ function SignUp() {
         signUp({variables: {username, password}});
     };
 
-
-    const {setUser, setToken, toggleSide, toggleSignUp} = useContext(AuthContext);
+    const handleSignUp = (_, {data: {signUp}}) => {
+        setUser(signUp.user);
+        toggleSide();
+        setToken(signUp.token);
+        resetTasks(signUp.user.tasks);
+    };
 
     return (
         <Mutation
             mutation={SIGN_UP}
-            update={({writeData}, {data: {signUp}}) => {
-                setUser(signUp.user);
-                setToken(signUp.token);
-                toggleSide();
-                writeData({
-                    data: {
-                        tasks: signUp.user.tasks
-                    }
-                });
-            }}
+            update={handleSignUp}
             onError={() => false}>
             {(signUp, {loading, error}) => (
                 <form className="dont-forget-to-sign-in-form" onSubmit={(e) => handleSubmit(e, signUp)}>
@@ -57,8 +58,8 @@ function SignUp() {
                     {!loading && <button type="submit">Sign up</button>}
 
                     <hr className="dont-forget-to-separator"/>
-                    <a className="dont-forget-to-sign-in-link" onClick={toggleSignUp}>Already have an account? Log
-                        in</a>
+                    <button className="dont-forget-to-sign-in-link" onClick={toggleSignUp}>Already have an account? Log
+                        in</button>
                 </form>
             )}
         </Mutation>

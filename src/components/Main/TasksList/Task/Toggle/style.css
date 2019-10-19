@@ -1,0 +1,8 @@
+.toggle-task{
+    cursor: pointer;
+    color: rgba(96, 125, 139, .35);
+    margin: 0 8px;
+}
+.dont-forget-to-item.done > .toggle-task{
+    color: #4caf50;
+}

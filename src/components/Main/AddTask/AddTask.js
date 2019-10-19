@@ -1,66 +1,62 @@
 import React, {useContext} from 'react'
 import {Mutation} from 'react-apollo'
-import {ADD_TASK, ADD_TASK_CLIENT, GET_TASKS} from './graphql'
+import {ADD_TASK} from './graphql'
+import {TasksListContext} from '../TasksList';
 import {AuthContext} from '../../Auth'
 import './style.css'
+import AddInput from './AddInput';
 
 function AddTask() {
     const {token} = useContext(AuthContext);
+    const {newTask} = useContext(TasksListContext);
 
-    const onEnter = (e, addTask) => {
-        if (e.key === 'Enter') {
-            e.stopPropagation();
-            e.preventDefault();
-            let text = e.target.value.trim();
-            if (text) {
-                addTask({
-                    variables: {text},
-                    optimisticResponse: {
-                        __typename: "Mutation",
-                        addTask: {
-                            __typename: "Task",
-                            id: `${+new Date()}`,
-                            position: 0,
-                            text,
-                            done: false
-                        }
+    if (token) {
+        const handleMutationUpdate = (_, {data: {addTask}}) => {
+            newTask(addTask);
+        };
+
+        return (
+            <Mutation
+                mutation={ADD_TASK}
+                update={handleMutationUpdate}
+                context={{
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
                     },
-                });
-            }
-            e.target.value = ''
-        }
-    };
+                }}>
+                {addTask => (
+                    <AddInput onEnter={ text => {
+                        addTask({
+                            variables: {text},
+                            optimisticResponse: {
+                                __typename: 'Mutation',
+                                addTask: {
+                                    __typename: 'Task',
+                                    id: `${+new Date()}`,
+                                    position: 0,
+                                    text,
+                                    done: false,
+                                },
+                            },
+                        });
+                    }}/>
+                )}
+            </Mutation>
+        )
+    } else {
+        const handleOnEnter = text => {
+            newTask({
+                id: `${+new Date()}`,
+                text,
+                position: 0,
+                done: false,
+            });
+        };
 
-    return (
-        <Mutation
-            mutation={token ? ADD_TASK : ADD_TASK_CLIENT}
-            update={(cache, {data: {addTask}}) => {
-                const previous = cache.readQuery({query: GET_TASKS});
-                cache.writeQuery({
-                    query: GET_TASKS,
-                    data: {
-                        tasks: [
-                            addTask,
-                            ...(previous.tasks.map(task => ({...task, position: task.position + 1})))
-                        ]
-                    }
-                });
-            }}
-            context={{
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }}>
-            {addTask => (
-                <input
-                    className="dont-forget-to-add"
-                    type="text"
-                    placeholder="write here and press ⏎ ( Enter ) to add a new task"
-                    onKeyDown={(e) => onEnter(e, addTask)}
-                />
-            )}
-        </Mutation>
-    )
+        return (
+            <AddInput onEnter={handleOnEnter}/>
+        )
+    }
 }
 
 export default AddTask

@@ -1,56 +1,35 @@
 import React, {useContext} from 'react'
 import {ApolloConsumer} from 'react-apollo'
 import {DragDropContext} from 'react-beautiful-dnd'
-import _ from 'lodash'
-
-import {GET_TASKS, MOVE_TASK} from './graphql'
-
-import DontForgetToList from "./TasksList"
-import DontForgetToFooter from "./DontForgetToFooter"
-
+import {MOVE_TASK} from './graphql'
 import AddTask from './AddTask'
-
+import TasksList, {TasksListContext} from './TasksList'
+import Footer from './Footer'
 import Filter, {FilterContextProvider} from './Filter'
-
 import {AuthContext} from '../Auth'
-
 import './style.css'
 
 function Main() {
-
     const {token} = useContext(AuthContext);
+    const {moveTasks} = useContext(TasksListContext);
 
-    const onDragEnd = (result, {mutate, readQuery, writeQuery}) => {
+    const onDragEnd = (result, {mutate}) => {
         const {source, destination} = result;
         if (token) {
             mutate({
                 mutation: MOVE_TASK,
                 variables: {
                     from: source.index,
-                    to: destination.index
+                    to: destination.index,
                 },
                 context: {
                     headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                }
+                        'Authorization': `Bearer ${token}`,
+                    },
+                },
             });
         }
-
-        const previous = readQuery({query: GET_TASKS});
-
-        const [others, movingTask] = _.partition(previous.tasks, task => task.position !== source.index);
-        others.splice(destination.index, 0, ...movingTask);
-
-        writeQuery({
-            query: GET_TASKS,
-            data: {
-                tasks: others.map((task, index) => ({
-                    ...task,
-                    ...(task.position !== index && {position: index})
-                }))
-            }
-        });
+        moveTasks(source.index, destination.index);
     };
 
     return (
@@ -60,8 +39,8 @@ function Main() {
                     <div className="dont-forget-to-container">
                         <FilterContextProvider>
                             <AddTask/>
-                            <DontForgetToList/>
-                            <DontForgetToFooter/>
+                            <TasksList/>
+                            <Footer/>
                             <Filter/>
                         </FilterContextProvider>
                     </div>

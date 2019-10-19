@@ -1,13 +1,10 @@
 import React, {useContext} from 'react'
 import {Draggable} from 'react-beautiful-dnd'
 import cx from 'classnames'
-
-import DontForgetToItemToggle from './DontForgetToItemToggle'
-import DontForgetToItemText from './DontForgetToItemText'
-import DontForgetToItemDelete from './DontForgetToItemDelete'
 import DragHandler from './DragHandler'
-
-
+import Toggle from './Toggle'
+import Text from './Text'
+import Delete from './Delete'
 import {TaskContextProvider} from './TaskContext'
 import {FilterContext} from '../../Filter'
 import './style.css'
@@ -41,13 +38,11 @@ function DontForgetToItem({id, position, text, done}) {
                             {hidden: !visible(done)},
                             {done},
                         )}>
-
                         <DragHandler dragHandleProps={provided.dragHandleProps}/>
 
-                        <DontForgetToItemToggle id={id} done={done}/>
-                        <DontForgetToItemText id={id} text={text} done={done}/>
-                        <DontForgetToItemDelete id={id} position={position}/>
-
+                        <Toggle/>
+                        <Text/>
+                        <Delete/>
                     </div>
                 </TaskContextProvider>
             )}

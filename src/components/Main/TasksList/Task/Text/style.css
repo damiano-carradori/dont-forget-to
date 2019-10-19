@@ -1,0 +1,21 @@
+.dont-forget-to-item > input{
+    font-size: 1em;
+    flex: 1 1 auto;
+    text-align: left;
+    margin: 6px 0;
+    border: none;
+    padding: 4px 1em;
+    outline: none;
+    border-radius: 2em;
+    background-color: #607d8b;
+    color: rgba(255, 255, 255, .75);
+    font-weight: 600;
+    transition: all ease-in-out 100ms;
+}
+.dont-forget-to-item > input:focus{
+    box-shadow: 0 0 0 2px #ffffff, 0 0 3px 3px #00BCD4;
+}
+.dont-forget-to-item.done > input{
+    opacity: .3;
+    text-decoration: line-through;
+}
