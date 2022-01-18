@@ -14,7 +14,7 @@
     "react-dom": "^16.6.3",
     "react-scripts": "^2.1.1",
     "graphql": "^14.0.2",
-    "react-apollo": "^2.3.2",
+    "react-apollo": "^2.5.0",
     "apollo-boost": "^0.1.22",
     "graphql-tag": "^2.10.0"
   },
